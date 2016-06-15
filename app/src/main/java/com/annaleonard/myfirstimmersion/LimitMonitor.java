@@ -68,11 +68,7 @@ public class LimitMonitor {
 
     public boolean isOneLimitHit (int whichJoint)
     {
-        if(jointPositions[whichJoint-1] > JOINT_LIMIT)
-        {
-            return true;
-        }
-        return false;
+        return jointPositions[whichJoint - 1] > JOINT_LIMIT;
     }
 
 }
