@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -39,105 +41,13 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     private int[] switcherId = {R.id.joint_a_val, R.id.joint_b_val, R.id.joint_c_val, R.id.joint_d_val, R.id.joint_e_val, R.id.joint_f_val, R.id.joint_g_val};    //xml locations of switchers for all joints view
     private int[] layoutId = {R.id.joint_a, R.id.joint_b, R.id.joint_c, R.id.joint_d, R.id.joint_e, R.id.joint_f, R.id.joint_g};
 
-    DecimalFormat jointPosFormat = new DecimalFormat("0.00");   //format to specify sig figs
-
-    private volatile Thread backgroundThread;   //flag to cleanly stop background thread
-
-    private DatagramSocket mSocket;
-    private DatagramPacket mPacket;
 
     final String[] jointStringArray = new String[7];
     int whichJoint = -1;
 
-    public void startThread() {
-        //Create a thread, define it's run() method, and start the thread
-        backgroundThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runThread();
-            }
-        });
-        backgroundThread.start();
-    }
-
-    public void runThread() {
-        Thread thisThread = Thread.currentThread(); //set flag to current thread
-        //check that the socket does not exist already before creating and binding it
-        if (mSocket == null) {
-            try {
-                mSocket = new DatagramSocket(61557, InetAddress.getByName("10.0.0.15")); //Use Glass IP address here
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (SocketException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //while the backgroundThread has not been asked to stop
-        while (backgroundThread == thisThread) {
-            byte[] buf = new byte[56];
-            mPacket = new DatagramPacket(buf, buf.length);
-
-            try {
-                Thread.sleep(10, 0);
-
-                try {
-                    mSocket.receive(mPacket);   //receive UDP packet
-                } catch (NullPointerException e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //NullPointerException indicates that mSocket was not created --> no internet connection
-                            new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener).show();
-
-                        }
-
-                    });
-                    break;
-                }
-
-                //Get data from UDP packet and convert to user-ready information    (joint values are in degrees)
-                double[] jointDoubleArray = new double[7];
-                for (int i = 0; i < 7; i++) {
-                    jointDoubleArray[i] = ByteBuffer.wrap(mPacket.getData()).order(ByteOrder.LITTLE_ENDIAN).getDouble(i * 8);
-                    jointStringArray[i] = String.valueOf(jointPosFormat.format(jointDoubleArray[i]));
-                }
-
-                final LimitMonitor onlyOne = new LimitMonitor(jointDoubleArray);
-
-                //RunOnUiThread method says 'hey UI thread! i don't know what to do with this. can you run this code?'
-                //All methods and variables available in the UI thread are available inside runOnUiThread
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        if (whichJoint > 0) {
-                            desiredJointPos.setText(jointStringArray[whichJoint - 1]);
-                            onlyOne.updateGUI(findViewById(R.id.layout), whichJoint - 1);
-                        } else {
-                            for (int i = 0; i < 7; i++) {
-                                onlyOne.updateGUI(findViewById(layoutId[i]), i);
-                                jointSwitcherArray[i].setText(jointStringArray[i]);
-                            }
-                        }
-
-                    }
-                });
-
-            } catch (InterruptedException e) {
-//                Log.i("InterruptedException",e.getMessage());
-            } catch (IOException e) {
-//                Log.i("IOException",e.getMessage());
-            }
-        }   //Justin Brannan is awesome and helps poor lost souls with git.
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        startThread();
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //Keeps activity awake
 
         getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);//Enable voice activated menu
@@ -146,21 +56,65 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         //Set up 7 text switchers for all joint view.  One for each joint.
         makeAllJointTextSwitchers();
 
+
+    }
+
+
+    public boolean checkNetwork()
+    {
+        ConnectivityManager cm = (ConnectivityManager)MeasuringActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+
     }
 
     @Override
-    protected void onDestroy() {
-        stopThread();
-        super.onDestroy();
+    protected void onStart() {
+
+        super.onStart();
+
+        BackgroundThread mThread = new BackgroundThread();
+
+        if(checkNetwork())
+        {
+            mThread.run();
+        }
+
+        else
+        {
+            new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener).show();
+
+        }
+
+
+        final LimitMonitor onlyOne = new LimitMonitor(mThread.getJointDoubles());
+
+        if (whichJoint > 0) {
+            desiredJointPos.setText(jointStringArray[whichJoint - 1]);
+            onlyOne.updateGUI(findViewById(R.id.layout), whichJoint - 1);
+        } else {
+            for (int i = 0; i < 7; i++) {
+                onlyOne.updateGUI(findViewById(layoutId[i]), i);
+                jointSwitcherArray[i].setText(jointStringArray[i]);
+            }
+
+        }
     }
 
-    public void stopThread() {
-        try {                   //Have to try in case there isn't an internet connection and socket wasn't created.
-            mSocket.close();    //Socket must be closed here or 'SocketException: bind failed: EADDRINUSE'
-        } catch (NullPointerException e) {
-        }
-        backgroundThread = null;    //Asks the thread to stop nicely by setting flag var
-    }
+//    @Override
+//    protected void onDestroy() {
+//        stopThread();
+//        super.onDestroy();
+//    }
+//
+//    public void stopThread() {
+//        try {                   //Have to try in case there isn't an internet connection and socket wasn't created.
+//            mSocket.close();    //Socket must be closed here or 'SocketException: bind failed: EADDRINUSE'
+//        } catch (NullPointerException e) {
+//        }
+//        backgroundThread = null;    //Asks the thread to stop nicely by setting flag var
+//    }
 
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {

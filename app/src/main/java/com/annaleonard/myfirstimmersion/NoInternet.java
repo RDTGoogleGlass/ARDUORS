@@ -45,23 +45,19 @@ public class NoInternet extends Dialog {
     public NoInternet(Context context, int iconResId,
                        int textResId, int footnoteResId,
                        DialogInterface.OnClickListener onClickListener) {
-
         super(context);
-        Log.i("method called", "to super");
+
         mOnClickListener = onClickListener;
         mAudioManager =
                 (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mGestureDetector =
                 new GestureDetector(context).setBaseListener(mBaseListener);
-        Log.i("click list,am,gesture", "setup");
 
         setContentView(new CardBuilder(context, CardBuilder.Layout.ALERT)
                 .setIcon(iconResId)
                 .setText(textResId)
                 .setFootnote(footnoteResId)
                 .getView());
-        Log.i("contenet view", "set");
-
     }
 
     /** Overridden to let the gesture detector handle a possible tap event. */
