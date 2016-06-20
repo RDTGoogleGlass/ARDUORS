@@ -4,6 +4,7 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     >
 
     <RelativeLayout
@@ -14,6 +15,7 @@
         android:layout_marginTop="@dimen/glass_card_margin"
         android:layout_marginRight="@dimen/glass_card_margin"
         tools:ignore="UselessLeaf"
+
         >
 
         <!-- Put your widgets inside this RelativeLayout. -->
@@ -27,8 +29,8 @@
 
         <LinearLayout
             android:id="@+id/joint_a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="40dp"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/joint_a_title"
@@ -46,8 +48,8 @@
 
         <LinearLayout
             android:id="@+id/joint_b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="40dp"
             android:layout_below="@id/joint_a"
             android:orientation="horizontal">
             <TextView
@@ -65,8 +67,8 @@
 
         <LinearLayout
             android:id="@+id/joint_c"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="40dp"
             android:layout_below = "@id/joint_b"
             android:orientation="horizontal">
             <TextView
@@ -85,8 +87,8 @@
 
         <LinearLayout
             android:id="@+id/joint_d"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="40dp"
             android:layout_below="@id/joint_c"
             android:orientation="horizontal">
             <TextView
@@ -110,8 +112,8 @@
 
         <LinearLayout
             android:id="@+id/joint_e"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="40dp"
             android:layout_toRightOf="@id/middle_line"
             android:layout_below ="@id/stagger"
             android:orientation="horizontal">
@@ -130,8 +132,8 @@
 
         <LinearLayout
             android:id="@+id/joint_f"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="40dp"
             android:layout_toRightOf="@id/middle_line"
             android:layout_below="@id/joint_e"
             android:orientation="horizontal">
@@ -150,8 +152,8 @@
 
         <LinearLayout
             android:id="@+id/joint_g"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="40dp"
             android:layout_toRightOf="@id/middle_line"
             android:layout_below="@id/joint_f"
             android:orientation="horizontal">
@@ -178,6 +180,7 @@
         android:layout_marginBottom="@dimen/glass_card_footer_margin"
         android:layout_marginRight="@dimen/glass_card_margin"
         android:orientation="horizontal"
+
         >
 
         <!-- The footer view will grow to fit as much content as possible while the
@@ -192,6 +195,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
+
             />
 
         <TextView
@@ -202,6 +206,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
+
             />
 
     </LinearLayout>
@@ -209,15 +214,15 @@
 </FrameLayout>
 
 
-<!--
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:clickable="true"
-    android:onClick="onClick"
-    tools:context="com.annaleonard.myfirstimmersion.MeasuringActivity">
-</RelativeLayout>
--->
+    <!--
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:clickable="true"
+        android:onClick="onClick"
+        tools:context="com.annaleonard.myfirstimmersion.MeasuringActivity">
+    </RelativeLayout>
+    -->
