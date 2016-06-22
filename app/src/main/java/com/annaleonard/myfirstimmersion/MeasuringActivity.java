@@ -24,15 +24,6 @@ import android.widget.ViewSwitcher;
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.view.WindowUtils;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.text.DecimalFormat;
 
 public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFactory, View.OnClickListener {
     //TextSwitchers and ids that are used to update the xml layout displayed on the glass
@@ -42,8 +33,13 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     private int[] layoutId = {R.id.joint_a, R.id.joint_b, R.id.joint_c, R.id.joint_d, R.id.joint_e, R.id.joint_f, R.id.joint_g};
 
 
-    final String[] jointStringArray = new String[7];
+    String[] jointStringArray = new String[7];
     int whichJoint = -1;
+    RunJointData mThread = new RunJointData();
+    private boolean mRunning;
+    boolean alertSent;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +49,7 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);//Enable voice activated menu
         setContentView(R.layout.activity_measuring);  //Set the desired layout to display on screen
 
+        mRunning = true;
         //Set up 7 text switchers for all joint view.  One for each joint.
         makeAllJointTextSwitchers();
 
@@ -60,61 +57,46 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     }
 
 
-    public boolean checkNetwork()
-    {
-        ConnectivityManager cm = (ConnectivityManager)MeasuringActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        return isConnected;
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mThread.getJointDoubles();
     }
+
+
+
 
     @Override
     protected void onStart() {
 
         super.onStart();
 
-        BackgroundThread mThread = new BackgroundThread();
-
-        if(checkNetwork())
-        {
-            mThread.run();
-        }
-
-        else
-        {
-            new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener).show();
-
-        }
+        new Thread(mThread).start();
+        mUpdateJointVals.startUpdates();
 
 
-        final LimitMonitor onlyOne = new LimitMonitor(mThread.getJointDoubles());
-
-        if (whichJoint > 0) {
-            desiredJointPos.setText(jointStringArray[whichJoint - 1]);
-            onlyOne.updateGUI(findViewById(R.id.layout), whichJoint - 1);
-        } else {
-            for (int i = 0; i < 7; i++) {
-                onlyOne.updateGUI(findViewById(layoutId[i]), i);
-                jointSwitcherArray[i].setText(jointStringArray[i]);
-            }
-
-        }
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        stopThread();
-//        super.onDestroy();
-//    }
-//
-//    public void stopThread() {
-//        try {                   //Have to try in case there isn't an internet connection and socket wasn't created.
-//            mSocket.close();    //Socket must be closed here or 'SocketException: bind failed: EADDRINUSE'
-//        } catch (NullPointerException e) {
-//        }
-//        backgroundThread = null;    //Asks the thread to stop nicely by setting flag var
-//    }
+
+
+    UIUpdater mUpdateJointVals = new UIUpdater(new Runnable() {
+        @Override
+        public void run() {
+            // do stuff ...
+            jointStringArray = mThread.getJointStringArray();
+            if (mRunning) {
+                if (whichJoint > 0) {
+                    desiredJointPos.setText(jointStringArray[whichJoint - 1]);
+                } else {
+                    for (int i = 0; i < 7; i++) {
+                        jointSwitcherArray[i].setText(jointStringArray[i]);
+                    }
+                }
+            }
+        }
+
+    });
+
 
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
@@ -305,15 +287,5 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         am.playSoundEffect(Sounds.TAP);
     }
 
-    private final DialogInterface.OnClickListener mOnClickListener =
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int button) {
-                    // Open WiFi Settings
-                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                }
-
-
-            };
 }
 
