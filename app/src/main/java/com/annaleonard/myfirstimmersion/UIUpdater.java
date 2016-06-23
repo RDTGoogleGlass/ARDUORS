@@ -7,7 +7,7 @@ import android.os.Looper;
  * A class used to perform periodical updates,
  * specified inside a runnable object. An update interval
  * may be specified (otherwise, the class will perform the
- * update every 2 seconds).
+ * update every .002 seconds).
  *
  * @author Carlos Simões
  */

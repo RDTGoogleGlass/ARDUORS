@@ -2,13 +2,8 @@ package com.annaleonard.myfirstimmersion;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.media.AudioManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -35,7 +30,8 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
 
     String[] jointStringArray = new String[7];
     int whichJoint = -1;
-    RunJointData mThread = new RunJointData();
+    RunJointData mJointData = new RunJointData();
+    Thread mThread = new Thread(mJointData);
     private boolean mRunning;
     boolean alertSent;
 
@@ -60,7 +56,7 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     @Override
     protected void onResume() {
         super.onResume();
-        mThread.getJointDoubles();
+        mJointData.getJointDoubles();
     }
 
 
@@ -71,19 +67,31 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
 
         super.onStart();
 
-        new Thread(mThread).start();
+        mThread.start();
         mUpdateJointVals.startUpdates();
+
 
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("MeasuringActivity", "onPause called");
+        try{
+            mJointData.setCollectData(false);
+            mThread.join(100);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+    }
 
     UIUpdater mUpdateJointVals = new UIUpdater(new Runnable() {
         @Override
         public void run() {
             // do stuff ...
-            jointStringArray = mThread.getJointStringArray();
+            jointStringArray = mJointData.getJointStringArray();
             if (mRunning) {
                 if (whichJoint > 0) {
                     desiredJointPos.setText(jointStringArray[whichJoint - 1]);
