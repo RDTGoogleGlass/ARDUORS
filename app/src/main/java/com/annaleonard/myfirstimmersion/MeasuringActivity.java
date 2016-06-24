@@ -2,8 +2,11 @@ package com.annaleonard.myfirstimmersion;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -31,9 +34,11 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     String[] jointStringArray = new String[7];
     int whichJoint = -1;
     RunJointData mJointData = new RunJointData();
-    Thread mThread = new Thread(mJointData);
-    private boolean mRunning;
-    boolean alertSent;
+    Thread mThread;
+    RunNetworkCheck mNetworkCheck = new RunNetworkCheck(MeasuringActivity.this);
+    NoInternet mNoInternet;
+    NetworkRunnable mNetworkRunnable;
+
 
 
 
@@ -45,9 +50,10 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);//Enable voice activated menu
         setContentView(R.layout.activity_measuring);  //Set the desired layout to display on screen
 
-        mRunning = true;
         //Set up 7 text switchers for all joint view.  One for each joint.
         makeAllJointTextSwitchers();
+        mNetworkRunnable = new NetworkRunnable(mNetworkCheck, mJointData);
+        mThread = new Thread(mNetworkRunnable);
 
 
     }
@@ -56,7 +62,6 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     @Override
     protected void onResume() {
         super.onResume();
-        mJointData.getJointDoubles();
     }
 
 
@@ -68,6 +73,8 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         super.onStart();
 
         mThread.start();
+        mNoInternet = new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener);
+        mUpdateNoNetwork.startUpdates();
         mUpdateJointVals.startUpdates();
 
 
@@ -77,22 +84,24 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("MeasuringActivity", "onPause called");
         try{
-            mJointData.setCollectData(false);
-            mThread.join(100);
+            mNetworkRunnable.setPollNetwork(false);
+            mThread.join();
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
 
     }
 
+
+
     UIUpdater mUpdateJointVals = new UIUpdater(new Runnable() {
         @Override
         public void run() {
             // do stuff ...
-            jointStringArray = mJointData.getJointStringArray();
-            if (mRunning) {
+            if(mNetworkCheck.getIsConnected()) {
+                mNetworkRunnable.setPollNetwork(true);
+                jointStringArray = mJointData.getJointStringArray();
                 if (whichJoint > 0) {
                     desiredJointPos.setText(jointStringArray[whichJoint - 1]);
                 } else {
@@ -101,8 +110,28 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
                     }
                 }
             }
+            else{
+                mNetworkRunnable.setPollNetwork(false);
+
+            }
+
         }
 
+    });
+
+    UIUpdater mUpdateNoNetwork = new UIUpdater(new Runnable() {
+        @Override
+        public void run() {
+            if((!mNetworkCheck.getIsConnected()&&!mNoInternet.isShowing()) || !mJointData.getReceivingData())
+            {
+                mNoInternet.show();
+            }
+            else if (mNetworkCheck.getIsConnected()&&mNoInternet.isShowing()&& mJointData.getReceivingData())
+            {
+                mNoInternet.dismiss();
+            }
+
+        }
     });
 
 
@@ -251,7 +280,6 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
                 }
             });
             jointSwitcherArray[count].setText("0.00");
-//            Log.i("mS.setText"," ");
         }
     }
 
@@ -294,6 +322,15 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         am.playSoundEffect(Sounds.TAP);
     }
+
+    private final DialogInterface.OnClickListener mOnClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int button) {
+            // Open WiFi Settings
+            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+        }
+    };
+
 
 }
 

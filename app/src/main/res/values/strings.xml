@@ -37,7 +37,7 @@
     <string name="arduors">ARDUORS</string>
     <string name="splash_text_1">Tap two times to Start Measuring.</string>
     <string name="splash_text_2">See Information for help.</string>
-    <string name="alert_text">No network connectivity</string>
-    <string name="alert_footnote_text">Tap to view connectivity status</string>
+    <string name="alert_text">Not receiving data</string>
+    <string name="alert_footnote_text">Tap to view network connectivity status</string>
 
 </resources>
