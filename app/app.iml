@@ -95,6 +95,7 @@
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="androidplot-core-0.9.8" level="project" />
+    <orderEntry type="library" exported="" name="GraphView-4.1.0" level="project" />
     <orderEntry type="library" exported="" name="gdk-android-19" level="project" />
   </component>
 </module>
