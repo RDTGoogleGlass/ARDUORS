@@ -73,7 +73,7 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
         viewport.setMaxY(10);
         viewport.setScrollable(true);
 
-        makeAllJointTextSwitchers();
+        //makeAllJointTextSwitchers();
         mNetworkRunnable = new NetworkRunnable(mNetworkCheck, mJointData);
         mThread = new Thread(mNetworkRunnable);
     }
@@ -108,7 +108,7 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
     UIUpdater mUpdateJointVals = new UIUpdater(new Runnable() {
         @Override
         public void run() {
-            // do stuff ...
+            /*
             if(mNetworkCheck.getIsConnected()) {
                 mNetworkRunnable.setPollNetwork(true);
                 jointStringArray = mJointData.getJointStringArray();
@@ -119,7 +119,9 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
             else{
                 mNetworkRunnable.setPollNetwork(false);
 
-            }
+            } */
+
+            addEntry(6);
 
         }
 
@@ -278,7 +280,7 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
         }
         return super.onKeyDown(keyCode, event);
     }
-
+/*
     public void makeAllJointTextSwitchers() {
         for (int count = 0; count < 7; count++) {
             final int i = count;
@@ -321,6 +323,8 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
         });
         desiredJointPos.setText("0.0");
     }
+
+    */
 
     public View makeView() {
         TextView t = new TextView(this);
