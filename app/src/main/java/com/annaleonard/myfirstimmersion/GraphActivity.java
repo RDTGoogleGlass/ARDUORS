@@ -1,7 +1,6 @@
 package com.annaleonard.myfirstimmersion;
 
 import android.app.Activity;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -163,7 +162,7 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
         return true;
     }
 
-
+/* This code is only useful for the Measuring Activity, as you cannot run multiple joint data streams at once on a graph
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -267,6 +266,8 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
 
         return super.onMenuItemSelected(featureId, item);
     }
+
+    */
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {

@@ -82,11 +82,14 @@ public class MainActivity extends Activity {
         switch (item.getItemId())
         {
             case (R.id.measuring_menu_item):
-                startActivity(new Intent(this, GraphActivity.class));
+                startActivity(new Intent(this, MeasuringActivity.class));
                 return true;
 
             case (R.id.information_menu_item):
                 startActivity(new Intent(this, InformationActivity.class));
+                return true;
+            case (R.id.graph_menu_item):
+                startActivity(new Intent(this, GraphActivity.class));
                 return true;
             default:
                 return super.onMenuItemSelected(featureId, item);
