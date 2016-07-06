@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         switch (item.getItemId())
         {
             case (R.id.measuring_menu_item):
-                startActivity(new Intent(this, MeasuringActivity.class));
+                startActivity(new Intent(this, GraphActivity.class));
                 return true;
 
             case (R.id.information_menu_item):

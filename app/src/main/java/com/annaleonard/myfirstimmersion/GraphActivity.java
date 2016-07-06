@@ -14,7 +14,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
  * Created by svangara on 7/6/16.
  */
 
-public class RunGraph extends Activity{
+public class GraphActivity extends Activity{
 
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
