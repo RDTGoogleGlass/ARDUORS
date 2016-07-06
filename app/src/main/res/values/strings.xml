@@ -10,6 +10,10 @@
     <string name="start_measuring">Start Measuring</string>
     <string name="title_activity_measuring">MeasuringActivity</string>
 
+    <string name="start_graph">Start Graph</string>
+    <string name="title_activity_graph">GraphActivity</string>
+
+
     <string name="joint1">Joint 1: \u0020</string>
     <string name="joint2">Joint 2: \u0020</string>
     <string name="joint3">Joint 3: \u0020</string>
@@ -27,6 +31,7 @@
     <string name="joint_5_trigger">5</string>
     <string name="joint_6_trigger">6</string>
     <string name="joint_7_trigger">7</string>
+    <string name="show_general_graph">Show Graph</string>
     <string name="all_joints_trigger">Show All Joints</string>
 
     <string name="single_joint_title">Single Joint Display</string>
