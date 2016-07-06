@@ -68,7 +68,5 @@ public class RunJointData implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 }
