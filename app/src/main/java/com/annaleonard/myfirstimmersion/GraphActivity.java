@@ -108,7 +108,7 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
     UIUpdater mUpdateJointVals = new UIUpdater(new Runnable() {
         @Override
         public void run() {
-            /*
+
             if(mNetworkCheck.getIsConnected()) {
                 mNetworkRunnable.setPollNetwork(true);
                 jointStringArray = mJointData.getJointStringArray();
@@ -119,9 +119,8 @@ public class GraphActivity extends Activity implements ViewSwitcher.ViewFactory,
             else{
                 mNetworkRunnable.setPollNetwork(false);
 
-            } */
+            }
 
-            addEntry(6);
 
         }
 
