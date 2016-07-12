@@ -73,9 +73,17 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         super.onStart();
 
         mThread.start();
-        mNoInternet = new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener);
-        mUpdateNoNetwork.startUpdates();
-        mUpdateJointVals.startUpdates();
+//        mNoInternet = new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener);
+//        mUpdateNoNetwork.startUpdates();
+//        mUpdateJointVals.startUpdates();
+
+        if (whichJoint > 0) {
+            desiredJointPos.setText("0.00");
+        } else {
+            for (int i = 0; i < 7; i++) {
+                jointSwitcherArray[i].setText("0.00");
+            }
+        }
 
 
 

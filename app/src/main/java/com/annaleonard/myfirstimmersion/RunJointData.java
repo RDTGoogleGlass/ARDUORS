@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.DecimalFormat;
+import java.util.Random;
 
 /**
  * Created by gglass on 6/15/16.
@@ -21,6 +22,7 @@ public class RunJointData implements Runnable {
     DecimalFormat jointPosFormat = new DecimalFormat("0.00");   //format to specify sig figs
     double[] jointDoubleArray = new double[7];
     boolean receivingData;
+    Random r = new Random();
 
 
 
@@ -33,7 +35,8 @@ public class RunJointData implements Runnable {
 
 
     public void run() {
-//        Thread thisThread = Thread.currentThread(); //set flag to current thread
+
+        Thread thisThread = Thread.currentThread(); //set flag to current thread
 
         byte[] buf = new byte[56];
         packet = new DatagramPacket(buf, buf.length);
