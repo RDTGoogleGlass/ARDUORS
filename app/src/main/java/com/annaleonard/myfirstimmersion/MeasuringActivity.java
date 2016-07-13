@@ -27,12 +27,13 @@ import com.google.android.glass.view.WindowUtils;
  * The type Measuring activity.
  */
 public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFactory, View.OnClickListener {
-    //TextSwitchers and ids that are used to update the xml layout displayed on the glass
-    private TextSwitcher[] jointSwitcherArray = new TextSwitcher[7];    //Array containing text switchers for all joints view
-    private TextSwitcher desiredJoint, desiredJointPos;    //Text Switchers for single joints view
+    /**TextSwitchers and ids that are used to update the xml layout displayed on the glass*/
+    private TextSwitcher[] jointSwitcherArray = new TextSwitcher[7];
+    /**Array containing text switchers for all joints view*/
+    private TextSwitcher desiredJoint, desiredJointPos;
+    /**Text Switchers for single joints view*/
     private int[] switcherId = {R.id.joint_a_val, R.id.joint_b_val, R.id.joint_c_val, R.id.joint_d_val, R.id.joint_e_val, R.id.joint_f_val, R.id.joint_g_val};    //xml locations of switchers for all joints view
     private int[] layoutId = {R.id.joint_a, R.id.joint_b, R.id.joint_c, R.id.joint_d, R.id.joint_e, R.id.joint_f, R.id.joint_g};
-
 
     /**
      * The Joint string array.
@@ -180,7 +181,7 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         getMenuInflater().inflate(R.menu.menu_measuring, menu);
         return true;
     }
-
+    /**Overridden to be able to select which xml view to switch to based on menu input*/
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         // Handle action bar item clicks here. The action bar will

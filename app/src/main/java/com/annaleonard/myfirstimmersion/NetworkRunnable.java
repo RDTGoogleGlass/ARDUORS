@@ -24,7 +24,7 @@ public class NetworkRunnable implements Runnable {
     static boolean pollNetwork =true;
 
     /**
-     * Get collect data boolean.
+     * Get the boolean data.
      *
      * @return the boolean
      */
@@ -33,12 +33,12 @@ public class NetworkRunnable implements Runnable {
     /**
      * Set poll network.
      *
-     * @param a the a
+     * @param a the poll network
      */
     public static void setPollNetwork(boolean a){pollNetwork = a;}
 
     /**
-     * Get socket datagram socket.
+     * Get datagram socket.
      *
      * @return the datagram socket
      */
@@ -48,8 +48,8 @@ public class NetworkRunnable implements Runnable {
     /**
      * Instantiates a new Network runnable.
      *
-     * @param runnable1 the runnable 1
-     * @param runnable2 the runnable 2
+     * @param runnable1 the first runnable- Network Check
+     * @param runnable2 the second runnable 2- Joint Data
      */
     public NetworkRunnable(Runnable runnable1, Runnable runnable2) {
         this.networkCheck = runnable1;

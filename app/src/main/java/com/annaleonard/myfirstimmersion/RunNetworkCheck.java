@@ -11,15 +11,15 @@ import android.util.Log;
 public class RunNetworkCheck implements Runnable {
 
     /**
-     * The Is connected.
+     * Boolean saving connection state.
      */
     public boolean isConnected;
     private Context context;
 
     /**
-     * Gets is connected.
+     * Gets isConnected.
      *
-     * @return the is connected
+     * @return isConnected
      */
     public boolean getIsConnected() {
         return isConnected;
@@ -29,7 +29,7 @@ public class RunNetworkCheck implements Runnable {
     /**
      * Instantiates a new Run network check.
      *
-     * @param c the c
+     * @param c the Context
      */
     public RunNetworkCheck(Context c){context = c;}
 

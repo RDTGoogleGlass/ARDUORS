@@ -39,7 +39,7 @@ public class RunJointData implements Runnable {
 
 
     /**
-     * Get joint doubles double [ ].
+     * Get joint double [ ].
      *
      * @return the double [ ]
      */
@@ -48,7 +48,7 @@ public class RunJointData implements Runnable {
     }
 
     /**
-     * Get joint string array string [ ].
+     * Get joint string [ ].
      *
      * @return the string [ ]
      */
