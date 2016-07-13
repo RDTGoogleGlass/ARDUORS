@@ -5,6 +5,9 @@
     </style>
     <style name="MeasuringActivityTheme" parent="AppTheme">
 
+
+
+
     </style>
     <style name="MeasuringActivityMenuTheme" parent="AppTheme">
         <item name="android:textSize">22dp</item>
