@@ -13,19 +13,21 @@ import java.net.UnknownHostException;
 
 public class NetworkRunnable implements Runnable {
 
-    private Runnable networkCheck;
-    private Runnable jointData;
+    private RunNetworkCheck networkCheck;
+    private Runnable visibleData;
+    private RunNotificationCheck notificationCheck;
     static DatagramSocket socket;
-    static boolean pollNetwork =true;
+    static boolean pollNetwork = true;
 
     public boolean getCollectData(){return pollNetwork;}
     public static void setPollNetwork(boolean a){pollNetwork = a;}
     public static DatagramSocket getSocket(){return socket;}
 
 
-    public NetworkRunnable(Runnable runnable1, Runnable runnable2) {
-        this.networkCheck = runnable1;
-        this.jointData = runnable2;
+    public NetworkRunnable(RunNetworkCheck mNetworkCheck, Runnable mVisibleData, RunNotificationCheck mNotificationCheck) {
+        this.networkCheck = mNetworkCheck;
+        this.visibleData = mVisibleData;
+        this.notificationCheck = mNotificationCheck;
     }
 
     @Override
@@ -36,9 +38,7 @@ public class NetworkRunnable implements Runnable {
             try {
                 socket = new DatagramSocket(61557, InetAddress.getByName("10.0.0.15")); //Use Glass IP address here
                 pollNetwork = true;
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (SocketException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -46,8 +46,14 @@ public class NetworkRunnable implements Runnable {
 
         while(pollNetwork) {
             //alternate between these two
-            networkCheck.run();
-            jointData.run();
+           networkCheck.run();
+
+            while(networkCheck.getIsConnected())
+           {
+               networkCheck.run();
+               visibleData.run();
+               notificationCheck.run();
+           }
         }
 
         try {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -26,16 +27,20 @@ import com.google.android.glass.view.WindowUtils;
 public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFactory, View.OnClickListener {
     //TextSwitchers and ids that are used to update the xml layout displayed on the glass
     private TextSwitcher[] jointSwitcherArray = new TextSwitcher[7];    //Array containing text switchers for all joints view
-    private TextSwitcher desiredJoint, desiredJointPos;    //Text Switchers for single joints view
+    private TextSwitcher desiredJoint, desiredJointPos, footer;    //Text Switchers for single joints view
     private int[] switcherId = {R.id.joint_a_val, R.id.joint_b_val, R.id.joint_c_val, R.id.joint_d_val, R.id.joint_e_val, R.id.joint_f_val, R.id.joint_g_val};    //xml locations of switchers for all joints view
     private int[] layoutId = {R.id.joint_a, R.id.joint_b, R.id.joint_c, R.id.joint_d, R.id.joint_e, R.id.joint_f, R.id.joint_g};
 
 
     String[] jointStringArray = new String[7];
     int whichJoint = -1;
+    String notificationText;
+    int notificationColor;
+
     RunJointData mJointData = new RunJointData();
     Thread mThread;
-    RunNetworkCheck mNetworkCheck = new RunNetworkCheck(MeasuringActivity.this);
+    RunNetworkCheck mNetworkCheck;
+    RunNotificationCheck mNotificationCheck;
     NoInternet mNoInternet;
     NetworkRunnable mNetworkRunnable;
 
@@ -52,7 +57,7 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
 
         //Set up 7 text switchers for all joint view.  One for each joint.
         makeAllJointTextSwitchers();
-        mNetworkRunnable = new NetworkRunnable(mNetworkCheck, mJointData);
+        mNetworkRunnable = new NetworkRunnable(mNetworkCheck, mJointData, mNotificationCheck);
         mThread = new Thread(mNetworkRunnable);
 
 
@@ -84,8 +89,6 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
                 jointSwitcherArray[i].setText("0.00");
             }
         }
-
-
 
     }
 
@@ -138,6 +141,15 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
             {
                 mNoInternet.dismiss();
             }
+
+        }
+    });
+
+    UIUpdater mSendNotification = new UIUpdater(new Runnable() {
+        @Override
+        public void run() {
+            footer.setText(mNotificationCheck.getNotificationText());
+            footer.setBackgroundColor(mNotificationCheck.getNotificationColor());
 
         }
     });
@@ -289,6 +301,19 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
             });
             jointSwitcherArray[count].setText("0.00");
         }
+    }
+
+    void makeNotificationTextSwitcher(){
+        footer = (TextSwitcher) findViewById(R.id.footer);
+        footer.setFactory(new ViewSwitcher.ViewFactory() {
+
+            @Override
+            public View makeView() {
+                TextView t = new TextView(getApplicationContext());
+                t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                return t;
+            }
+        });
     }
 
     void makeSingleJointTextSwitchers() {
