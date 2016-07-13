@@ -23,6 +23,9 @@ import com.google.android.glass.media.Sounds;
 import com.google.android.glass.view.WindowUtils;
 
 
+/**
+ * The type Measuring activity.
+ */
 public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFactory, View.OnClickListener {
     //TextSwitchers and ids that are used to update the xml layout displayed on the glass
     private TextSwitcher[] jointSwitcherArray = new TextSwitcher[7];    //Array containing text switchers for all joints view
@@ -31,12 +34,33 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     private int[] layoutId = {R.id.joint_a, R.id.joint_b, R.id.joint_c, R.id.joint_d, R.id.joint_e, R.id.joint_f, R.id.joint_g};
 
 
+    /**
+     * The Joint string array.
+     */
     String[] jointStringArray = new String[7];
+    /**
+     * The Which joint.
+     */
     int whichJoint = -1;
+    /**
+     * The M joint data.
+     */
     RunJointData mJointData = new RunJointData();
+    /**
+     * The M thread.
+     */
     Thread mThread;
+    /**
+     * The M network check.
+     */
     RunNetworkCheck mNetworkCheck = new RunNetworkCheck(MeasuringActivity.this);
+    /**
+     * The M no internet.
+     */
     NoInternet mNoInternet;
+    /**
+     * The M network runnable.
+     */
     NetworkRunnable mNetworkRunnable;
 
 
@@ -94,7 +118,9 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     }
 
 
-
+    /**
+     * The M update joint vals.
+     */
     UIUpdater mUpdateJointVals = new UIUpdater(new Runnable() {
         @Override
         public void run() {
@@ -119,6 +145,9 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
 
     });
 
+    /**
+     * The M update no network.
+     */
     UIUpdater mUpdateNoNetwork = new UIUpdater(new Runnable() {
         @Override
         public void run() {
@@ -268,6 +297,9 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * Make all joint text switchers.
+     */
     public void makeAllJointTextSwitchers() {
         for (int count = 0; count < 7; count++) {
             final int i = count;
@@ -283,6 +315,9 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         }
     }
 
+    /**
+     * Make single joint text switchers.
+     */
     void makeSingleJointTextSwitchers() {
         desiredJoint = (TextSwitcher) findViewById(R.id.desired_joint);//attaches each switcher to its xml id
         desiredJoint.setFactory(new ViewSwitcher.ViewFactory() {

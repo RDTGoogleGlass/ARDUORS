@@ -41,8 +41,7 @@ public class UIUpdater {
      * intended update interval.
      *
      * @param uiUpdater A runnable containing the update routine.
-     * @param interval  The interval over which the routine
-     *                  should run (milliseconds).
+     * @param interval  The interval over which the routine                  should run (milliseconds).
      */
     public UIUpdater(Runnable uiUpdater, int interval){
         this(uiUpdater);

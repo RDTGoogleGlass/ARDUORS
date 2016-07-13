@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type Information activity.
+ */
 public class InformationActivity extends Activity {
 
     private CardScrollView mCardScrollView; //horizontal view that shows scrolling cards

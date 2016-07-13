@@ -16,18 +16,49 @@ import java.text.DecimalFormat;
  * Created by gglass on 6/15/16.
  */
 public class RunJointData implements Runnable {
+    /**
+     * The Packet.
+     */
     DatagramPacket packet;
+    /**
+     * The Joint string array.
+     */
     final String[] jointStringArray = new String[7];
+    /**
+     * The Joint pos format.
+     */
     DecimalFormat jointPosFormat = new DecimalFormat("0.00");   //format to specify sig figs
+    /**
+     * The Joint double array.
+     */
     double[] jointDoubleArray = new double[7];
+    /**
+     * The Receiving data.
+     */
     boolean receivingData;
 
 
-
+    /**
+     * Get joint doubles double [ ].
+     *
+     * @return the double [ ]
+     */
     public double[] getJointDoubles(){
         return jointDoubleArray;
     }
+
+    /**
+     * Get joint string array string [ ].
+     *
+     * @return the string [ ]
+     */
     public String[] getJointStringArray() {return jointStringArray;}
+
+    /**
+     * Get receiving data boolean.
+     *
+     * @return the boolean
+     */
     public boolean getReceivingData(){return receivingData;}
 
 
