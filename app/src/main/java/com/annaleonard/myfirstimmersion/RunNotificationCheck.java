@@ -18,10 +18,11 @@ public class RunNotificationCheck implements Runnable {
     DatagramPacket packet;
     String notificationText;
     int notificationColor;
-    boolean notificationRecieved;
+    boolean notificationReceived;
 
     public String getNotificationText (){return notificationText;}
     public int getNotificationColor (){return notificationColor;}
+    public boolean getNotificationReceived(){return notificationReceived;}
 
 
     public void run() {
@@ -41,9 +42,9 @@ public class RunNotificationCheck implements Runnable {
 
 
             //Get data from TCP packet and convert to user-ready information
-            if (notificationRecieved) {
+            if (notificationReceived) {
                /*
-               readd packet and determine type of notification
+               readdpacket and determine type of notification
                set notificationText and notificationColor based on tyoe of notification
                 */
             }

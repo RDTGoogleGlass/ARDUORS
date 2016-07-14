@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -78,9 +76,10 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         super.onStart();
 
         mThread.start();
-//        mNoInternet = new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener);
-//        mUpdateNoNetwork.startUpdates();
-//        mUpdateJointVals.startUpdates();
+        mNoInternet = new NoInternet(MeasuringActivity.this, R.drawable.ic_cloud_sad_150, R.string.alert_text, R.string.alert_footnote_text, mOnClickListener);
+        mUpdateNoNetwork.startUpdates();
+        mUpdateJointVals.startUpdates();
+        mSendNotification.startUpdates();
 
         if (whichJoint > 0) {
             desiredJointPos.setText("0.00");
@@ -96,7 +95,7 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     protected void onPause() {
         super.onPause();
         try{
-            mNetworkRunnable.setPollNetwork(false);
+            mNetworkRunnable.setCollectData(false);
             mThread.join();
         }catch (InterruptedException e) {
             e.printStackTrace();
@@ -111,7 +110,7 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         public void run() {
             // do stuff ...
             if(mNetworkCheck.getIsConnected()) {
-                mNetworkRunnable.setPollNetwork(true);
+                mNetworkRunnable.setCollectData(true);
                 jointStringArray = mJointData.getJointStringArray();
                 if (whichJoint > 0) {
                     desiredJointPos.setText(jointStringArray[whichJoint - 1]);
@@ -122,7 +121,7 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
                 }
             }
             else{
-                mNetworkRunnable.setPollNetwork(false);
+                mNetworkRunnable.setCollectData(false);
 
             }
 
@@ -148,8 +147,11 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     UIUpdater mSendNotification = new UIUpdater(new Runnable() {
         @Override
         public void run() {
-            footer.setText(mNotificationCheck.getNotificationText());
-            footer.setBackgroundColor(mNotificationCheck.getNotificationColor());
+            if(mNotificationCheck.getNotificationReceived())
+            {
+                footer.setText(mNotificationCheck.getNotificationText());
+                footer.setBackgroundColor(mNotificationCheck.getNotificationColor());
+            }
 
         }
     });
@@ -289,6 +291,8 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     }
 
     public void makeAllJointTextSwitchers() {
+        makeNotificationTextSwitcher();
+
         for (int count = 0; count < 7; count++) {
             final int i = count;
             jointSwitcherArray[count] = (TextSwitcher) findViewById(switcherId[count]);
@@ -317,6 +321,8 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     }
 
     void makeSingleJointTextSwitchers() {
+        makeNotificationTextSwitcher();
+
         desiredJoint = (TextSwitcher) findViewById(R.id.desired_joint);//attaches each switcher to its xml id
         desiredJoint.setFactory(new ViewSwitcher.ViewFactory() {
 

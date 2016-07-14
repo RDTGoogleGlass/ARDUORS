@@ -17,10 +17,10 @@ public class NetworkRunnable implements Runnable {
     private Runnable visibleData;
     private RunNotificationCheck notificationCheck;
     static DatagramSocket socket;
-    static boolean pollNetwork = true;
+    static boolean collectData = true;
 
-    public boolean getCollectData(){return pollNetwork;}
-    public static void setPollNetwork(boolean a){pollNetwork = a;}
+//    public boolean getCollectData(){return collectData;}
+    public static void setCollectData(boolean a){collectData = a;}
     public static DatagramSocket getSocket(){return socket;}
 
 
@@ -37,23 +37,20 @@ public class NetworkRunnable implements Runnable {
         if (socket == null) {
             try {
                 socket = new DatagramSocket(61557, InetAddress.getByName("10.0.0.15")); //Use Glass IP address here
-                pollNetwork = true;
+                collectData = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
 
-        while(pollNetwork) {
+        while(collectData) {
             //alternate between these two
-           networkCheck.run();
-
-            while(networkCheck.getIsConnected())
-           {
-               networkCheck.run();
-               visibleData.run();
-               notificationCheck.run();
-           }
+            networkCheck.run();
+            if (networkCheck.getIsConnected()) {
+                visibleData.run();
+                notificationCheck.run();
+            }
         }
 
         try {
