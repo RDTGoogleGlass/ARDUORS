@@ -68,7 +68,6 @@ public class NetworkRunnable implements Runnable {
 
 
         while(collectData) {
-            //alternate between these two
             networkCheck.run();
             if (networkCheck.getIsConnected()) {
                 visibleData.run();
