@@ -10,9 +10,9 @@ import java.net.UnknownHostException;
 /**
  * Created by gglass on 6/24/16.
  */
-
 public class NetworkRunnable implements Runnable {
 
+<<<<<<< HEAD
     private RunNetworkCheck networkCheck;
     private Runnable visibleData;
     private RunNotificationCheck notificationCheck;
@@ -28,6 +28,50 @@ public class NetworkRunnable implements Runnable {
         this.networkCheck = mNetworkCheck;
         this.visibleData = mVisibleData;
         this.notificationCheck = mNotificationCheck;
+=======
+    private Runnable networkCheck;
+    private Runnable jointData;
+    /**
+     * The Socket.
+     */
+    static DatagramSocket socket;
+    /**
+     * The Poll network.
+     */
+    static boolean pollNetwork =true;
+
+    /**
+     * Get the boolean data.
+     *
+     * @return the boolean
+     */
+    public boolean getCollectData(){return pollNetwork;}
+
+    /**
+     * Set poll network.
+     *
+     * @param a the poll network
+     */
+    public static void setPollNetwork(boolean a){pollNetwork = a;}
+
+    /**
+     * Get datagram socket.
+     *
+     * @return the datagram socket
+     */
+    public static DatagramSocket getSocket(){return socket;}
+
+
+    /**
+     * Instantiates a new Network runnable.
+     *
+     * @param runnable1 the first runnable- Network Check
+     * @param runnable2 the second runnable 2- Joint Data
+     */
+    public NetworkRunnable(Runnable runnable1, Runnable runnable2) {
+        this.networkCheck = runnable1;
+        this.jointData = runnable2;
+>>>>>>> fcf04d10e20a8e8cddb84c49fcaf403b58d83ed7
     }
 
     @Override

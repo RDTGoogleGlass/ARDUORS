@@ -41,6 +41,15 @@ public class NoInternet extends Dialog {
                 }
             };
 
+    /**
+     * Instantiates a new No internet.
+     *
+     * @param context         the context
+     * @param iconResId       the icon res id
+     * @param textResId       the text res id
+     * @param footnoteResId   the footnote res id
+     * @param onClickListener the on click listener
+     */
     public NoInternet(Context context, int iconResId,
                       int textResId, int footnoteResId,
                       DialogInterface.OnClickListener onClickListener) {
