@@ -88,9 +88,6 @@ public class MainActivity extends Activity {
             case (R.id.information_menu_item):
                 startActivity(new Intent(this, InformationActivity.class));
                 return true;
-            case (R.id.graph_menu_item):
-                startActivity(new Intent(this, GraphActivity.class));
-                return true;
             default:
                 return super.onMenuItemSelected(featureId, item);
         }

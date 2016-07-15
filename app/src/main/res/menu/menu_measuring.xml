@@ -54,6 +54,10 @@
 
     <item
         android:id="@+id/showAllJoints"
-        android:title="@string/all_joints_trigger"
-        android:orderInCategory="3"/>
+        android:title="@string/all_joints_trigger" />
+
+    <item
+        android:id="@+id/startGraph"
+        android:title="Show Graph" />
+
 </menu>

@@ -162,6 +162,12 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
 
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS || featureId == Window.FEATURE_OPTIONS_PANEL) {
             switch (item.getItemId()) {
+                case (R.id.startGraph):
+                    startActivity(new Intent(this, GraphActivity.class));
+                    return true;
+
+
+
                 case (R.id.showAllJoints):
                     //returns to layout with all 7 joints.
                     setContentView(R.layout.activity_measuring);

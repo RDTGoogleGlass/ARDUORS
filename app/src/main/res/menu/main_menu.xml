@@ -8,13 +8,6 @@
     </item>
 
     <item
-        android:id="@+id/graph_menu_item"
-        android:title="@string/start_graph"
-        android:orderInCategory="1"
-        android:icon="@drawable/ic_computer_50">
-    </item>
-
-    <item
         android:id="@+id/information_menu_item"
         android:title="@string/information"
         android:orderInCategory="2"
