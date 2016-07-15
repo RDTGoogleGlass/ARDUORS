@@ -26,17 +26,15 @@ import com.google.android.glass.view.WindowUtils;
  * The type Measuring activity.
  */
 public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFactory, View.OnClickListener {
-<<<<<<< HEAD
-    //TextSwitchers and ids that are used to update the xml layout displayed on the glass
-    private TextSwitcher[] jointSwitcherArray = new TextSwitcher[7];    //Array containing text switchers for all joints view
-    private TextSwitcher desiredJoint, desiredJointPos, footer;    //Text Switchers for single joints view
-=======
+
+
     /**TextSwitchers and ids that are used to update the xml layout displayed on the glass*/
     private TextSwitcher[] jointSwitcherArray = new TextSwitcher[7];
     /**Array containing text switchers for all joints view*/
     private TextSwitcher desiredJoint, desiredJointPos;
     /**Text Switchers for single joints view*/
->>>>>>> fcf04d10e20a8e8cddb84c49fcaf403b58d83ed7
+    private TextSwitcher footer;
+
     private int[] switcherId = {R.id.joint_a_val, R.id.joint_b_val, R.id.joint_c_val, R.id.joint_d_val, R.id.joint_e_val, R.id.joint_f_val, R.id.joint_g_val};    //xml locations of switchers for all joints view
     private int[] layoutId = {R.id.joint_a, R.id.joint_b, R.id.joint_c, R.id.joint_d, R.id.joint_e, R.id.joint_f, R.id.joint_g};
 
@@ -48,24 +46,20 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
      * The Which joint.
      */
     int whichJoint = -1;
-<<<<<<< HEAD
     String notificationText;
     int notificationColor;
 
-=======
     /**
      * The M joint data.
      */
->>>>>>> fcf04d10e20a8e8cddb84c49fcaf403b58d83ed7
     RunJointData mJointData = new RunJointData();
     /**
      * The M thread.
      */
     Thread mThread;
-<<<<<<< HEAD
-    RunNetworkCheck mNetworkCheck;
-    RunNotificationCheck mNotificationCheck;
-=======
+
+    RunNotificationCheck mNotificationCheck = new RunNotificationCheck();
+
     /**
      * The M network check.
      */
@@ -73,7 +67,6 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
     /**
      * The M no internet.
      */
->>>>>>> fcf04d10e20a8e8cddb84c49fcaf403b58d83ed7
     NoInternet mNoInternet;
     /**
      * The M network runnable.
@@ -353,7 +346,6 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         }
     }
 
-<<<<<<< HEAD
     void makeNotificationTextSwitcher(){
         footer = (TextSwitcher) findViewById(R.id.footer);
         footer.setFactory(new ViewSwitcher.ViewFactory() {
@@ -367,11 +359,9 @@ public class MeasuringActivity extends Activity implements ViewSwitcher.ViewFact
         });
     }
 
-=======
     /**
      * Make single joint text switchers.
      */
->>>>>>> fcf04d10e20a8e8cddb84c49fcaf403b58d83ed7
     void makeSingleJointTextSwitchers() {
         makeNotificationTextSwitcher();
 

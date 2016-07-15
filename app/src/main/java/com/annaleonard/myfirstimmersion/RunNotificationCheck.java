@@ -18,11 +18,12 @@ public class RunNotificationCheck implements Runnable {
     DatagramPacket packet;
     String notificationText;
     int notificationColor;
-    boolean notificationReceived;
+    boolean notificationReceived = false;
 
     public String getNotificationText (){return notificationText;}
     public int getNotificationColor (){return notificationColor;}
     public boolean getNotificationReceived(){return notificationReceived;}
+
 
 
     public void run() {
