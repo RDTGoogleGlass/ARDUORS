@@ -42,18 +42,11 @@ import java.util.List;
 
 
 /**
- * An {@link Activity} showing a tuggable "Hello World!" card.
- * <p/>
- * The main content view is composed of a one-card {@link CardScrollView} that provides tugging
- * feedback to the user when swipe gestures are detected.
- * If your Glassware intends to intercept swipe gestures, you should set the content view directly
- * and use a {@link com.google.android.glass.touchpad.GestureDetector}.
- *
- * @see <a href="https://developers.google.com/glass/develop/gdk/touch">GDK Developer Guide</a>
+ * This {@link Activity} contains the splash screen that the user will see on entering the app.
+ <p/>Navigate to the MeasuringActivity or the InformationActivity from here.
  */
 public class MainActivity extends Activity {
-    //This activity contains the splash screen that the user will see on entering the app.
-    //Navigate to the MeasuringActivity or the InformationActivity from here.
+
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -81,8 +74,12 @@ public class MainActivity extends Activity {
 
         switch (item.getItemId())
         {
-            case (R.id.measuring_menu_item):
-                startActivity(new Intent(this, MeasuringActivity.class));
+            case (R.id.joint_menu_item):
+                startActivity(new Intent(this, JointDataActivity.class));
+                return true;
+
+            case (R.id.force_menu_item):
+                startActivity(new Intent(this, ForceDataActivity.class));
                 return true;
 
             case (R.id.information_menu_item):

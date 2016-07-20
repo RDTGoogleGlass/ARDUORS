@@ -7,7 +7,7 @@ import android.os.Looper;
  * A class used to perform periodical updates,
  * specified inside a runnable object. An update interval
  * may be specified (otherwise, the class will perform the
- * update every .002 seconds).
+ * update every .015 seconds).
  *
  * @author Carlos Simões
  */
@@ -16,7 +16,7 @@ public class UIUpdater {
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private Runnable mStatusChecker;
-    private int UPDATE_INTERVAL = 20;
+    private int UPDATE_INTERVAL = 150;
 
     /**
      * Creates an UIUpdater object, that can be used to
@@ -41,8 +41,7 @@ public class UIUpdater {
      * intended update interval.
      *
      * @param uiUpdater A runnable containing the update routine.
-     * @param interval  The interval over which the routine
-     *                  should run (milliseconds).
+     * @param interval  The interval over which the routine                  should run (milliseconds).
      */
     public UIUpdater(Runnable uiUpdater, int interval){
         this(uiUpdater);

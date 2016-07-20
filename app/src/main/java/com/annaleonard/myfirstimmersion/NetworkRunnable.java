@@ -1,32 +1,60 @@
 package com.annaleonard.myfirstimmersion;
 
-import android.util.Log;
-
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 /**
  * Created by gglass on 6/24/16.
  */
-
 public class NetworkRunnable implements Runnable {
 
-    private Runnable networkCheck;
-    private Runnable jointData;
-    static DatagramSocket socket;
-    static boolean pollNetwork =true;
+    private RunNetworkCheck networkCheck;
+    private Runnable visibleData;
+    private RunNotificationCheck notificationCheck;
 
-    public boolean getCollectData(){return pollNetwork;}
-    public static void setPollNetwork(boolean a){pollNetwork = a;}
+//    public boolean getCollectData(){return collectData;}
+
+    /**
+     * The Socket.
+     */
+    static DatagramSocket socket;
+    /**
+     * The Poll network.
+     */
+    static boolean collectData =true;
+
+    /**
+     * Get the boolean data.
+     *
+     * @return the boolean
+     */
+    public boolean getCollectData(){return collectData;}
+
+    /**
+     * Set poll network.
+     *
+     * @param a the poll network
+     */
+    public static void setCollectData(boolean a){
+        collectData = a;}
+
+    /**
+     * Get datagram socket.
+     *
+     * @return the datagram socket
+     */
     public static DatagramSocket getSocket(){return socket;}
 
 
-    public NetworkRunnable(Runnable runnable1, Runnable runnable2) {
-        this.networkCheck = runnable1;
-        this.jointData = runnable2;
+    public NetworkRunnable(RunNetworkCheck mNetworkCheck, Runnable mVisibleData, RunNotificationCheck mNotificationCheck) {
+        this.networkCheck = mNetworkCheck;
+        this.visibleData = mVisibleData;
+        this.notificationCheck = mNotificationCheck;
     }
+
+    public NetworkRunnable(Runnable mVisibleData)
+    {visibleData=mVisibleData;}
+
 
     @Override
     public void run() {
@@ -35,19 +63,20 @@ public class NetworkRunnable implements Runnable {
         if (socket == null) {
             try {
                 socket = new DatagramSocket(61557, InetAddress.getByName("10.0.0.15")); //Use Glass IP address here
-                pollNetwork = true;
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (SocketException e) {
+                collectData = true;
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
 
-        while(pollNetwork) {
+        while(collectData) {
             //alternate between these two
             networkCheck.run();
-            jointData.run();
+            if (networkCheck.getIsConnected()) {
+                visibleData.run();
+                notificationCheck.run();
+            }
         }
 
         try {
