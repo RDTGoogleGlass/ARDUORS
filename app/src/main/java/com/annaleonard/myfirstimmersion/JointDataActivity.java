@@ -17,8 +17,10 @@ import android.widget.ViewSwitcher;
 
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.view.WindowUtils;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.text.DecimalFormat;
 
 /**
  * Created by rdtintern on 7/19/16.
@@ -27,12 +29,16 @@ public class JointDataActivity extends Activity {
     /**TextSwitchers and ids that are used to update the xml layout displayed on the glass*/
     private TextSwitcher[] jointSwitcherArray = new TextSwitcher[7];
     /**Array containing text switchers for all joints view*/
-    private TextSwitcher desiredJoint, desiredJointPos;
+    private TextSwitcher desiredJoint, desiredJointPos, footer;
     /**Text Switchers for single joints view*/
-
     private int[] switcherId = {R.id.joint_a_val, R.id.joint_b_val, R.id.joint_c_val, R.id.joint_d_val, R.id.joint_e_val, R.id.joint_f_val, R.id.joint_g_val};    //xml locations of switchers for all joints view
 
-    private LineGraphSeries<DataPoint> series;
+    /**
+     * The Joint pos format.
+     */
+    DecimalFormat jointPosFormat = new DecimalFormat("0.00");   //format to specify sig figs
+
+    SynchronizedData jointSyncData = new SynchronizedData();
 
     /**
      * Integer lastX sets the x value when graphing data points
@@ -45,10 +51,12 @@ public class JointDataActivity extends Activity {
     String[] jointStringArray = new String[7];
 
 
+    ByteBuffer jointData;
+
     /**
      * The Joint double array.
      */
-    double[] jointDoubleArray = new double[7];
+    double[] jointDataArray = new double[7];
 
     /**
      * The Which joint.
@@ -57,7 +65,6 @@ public class JointDataActivity extends Activity {
     /**
      * The M joint data.
      */
-    RunJointData mJointData = new RunJointData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -69,13 +76,17 @@ public class JointDataActivity extends Activity {
 
         //Set up 7 text switchers for all joint view.  One for each joint.
         makeAllJointTextSwitchers();
+        App.setContext(this);
+
+
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        mUpdateJointVals.startUpdates();
+        mUpdateJointVals.startUpdates();
+
 
     }
 
@@ -127,6 +138,7 @@ public class JointDataActivity extends Activity {
                 setContentView(R.layout.all_joints);
                 makeAllJointTextSwitchers();
                 whichJoint = -1;
+                App.setContext(this);
                 return true;
             case (R.id.single_joint_option):
                 //sets view to single joint layout, but does not set switchers
@@ -140,6 +152,7 @@ public class JointDataActivity extends Activity {
 
                 whichJoint = 1;
                 desiredJoint.setText("Joint 1");
+                App.setContext(this);
                 return true;
 
             case (R.id.showJoint2):
@@ -149,6 +162,7 @@ public class JointDataActivity extends Activity {
 
                 whichJoint = 2;
                 desiredJoint.setText("Joint 2");
+                App.setContext(this);
                 return true;
 
             case (R.id.showJoint3):
@@ -158,6 +172,7 @@ public class JointDataActivity extends Activity {
 
                 whichJoint = 3;
                 desiredJoint.setText("Joint 3");
+                App.setContext(this);
                 return true;
 
             case (R.id.showJoint4):
@@ -167,6 +182,7 @@ public class JointDataActivity extends Activity {
 
                 whichJoint = 4;
                 desiredJoint.setText("Joint 4");
+                App.setContext(this);
                 return true;
 
             case (R.id.showJoint5):
@@ -176,6 +192,7 @@ public class JointDataActivity extends Activity {
 
                 whichJoint = 5;
                 desiredJoint.setText("Joint 5");
+                App.setContext(this);
                 return true;
 
             case (R.id.showJoint6):
@@ -185,6 +202,7 @@ public class JointDataActivity extends Activity {
 
                 whichJoint = 6;
                 desiredJoint.setText("Joint 6");
+                App.setContext(this);
                 return true;
 
             case (R.id.showJoint7):
@@ -194,6 +212,7 @@ public class JointDataActivity extends Activity {
 
                 whichJoint = 7;
                 desiredJoint.setText("Joint 7");
+                App.setContext(this);
                 return true;
 
             default:
@@ -209,13 +228,12 @@ public class JointDataActivity extends Activity {
         @Override
         public void run() {
             // do stuff ...
-            jointStringArray = mJointData.getJointStringArray();
-            jointDoubleArray = mJointData.getJointDoubles();
+            jointData = jointSyncData.getPacketData();
             if (whichJoint > 0) {
-                series.appendData(new DataPoint(lastX++, jointDoubleArray[whichJoint-1]), true, 10);
+                desiredJointPos.setText(String.valueOf(jointPosFormat.format(jointData.getDouble((whichJoint-1)*8))));
             } else {
                 for (int i = 0; i < 7; i++) {
-                    jointSwitcherArray[i].setText(jointStringArray[i]);
+                    jointSwitcherArray[i].setText(String.valueOf(jointPosFormat.format(jointData.getDouble(i*8))));
                 }
             }
         }
@@ -226,6 +244,7 @@ public class JointDataActivity extends Activity {
      * Make all joint text switchers.
      */
     public void makeAllJointTextSwitchers() {
+        makeNotificationTextSwitcher();
         for (int count = 0; count < 7; count++) {
             final int i = count;
             jointSwitcherArray[count] = (TextSwitcher) findViewById(switcherId[count]);
@@ -244,6 +263,7 @@ public class JointDataActivity extends Activity {
      * Make single force text switchers.
      */
     void makeSingleJointTextSwitchers() {
+        makeNotificationTextSwitcher();
         desiredJoint = (TextSwitcher) findViewById(R.id.desired_data);//attaches each switcher to its xml id
         desiredJoint.setFactory(new ViewSwitcher.ViewFactory() {
 
@@ -269,5 +289,18 @@ public class JointDataActivity extends Activity {
             }
         });
         desiredJointPos.setText("0.00");
+    }
+
+    void makeNotificationTextSwitcher(){
+        footer = (TextSwitcher) findViewById(R.id.footer);
+        footer.setFactory(new ViewSwitcher.ViewFactory() {
+
+            @Override
+            public View makeView() {
+                TextView t = new TextView(getApplicationContext());
+                t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                return t;
+            }
+        });
     }
 }

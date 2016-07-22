@@ -42,8 +42,9 @@
     <string name="arduors">ARDUORS</string>
     <string name="splash_text_1">Tap twice to start measuring.</string>
     <string name="splash_text_2">See Information for help.</string>
-    <string name="alert_text">Not receiving data</string>
+    <string name="no_internet_text">No network connection</string>
     <string name="alert_footnote_text">Tap to view network connectivity status</string>
+    <string name="no_data_text">Not receiving data</string>
     <string name="title_activity_jointdata">Joint Data</string>
     <string name="title_activity_forcedata">Force Data</string>
     <string name="graph_single_force_trigger">Graph Single Force</string>

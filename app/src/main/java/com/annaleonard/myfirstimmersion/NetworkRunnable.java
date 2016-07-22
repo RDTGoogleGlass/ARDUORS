@@ -1,5 +1,7 @@
 package com.annaleonard.myfirstimmersion;
 
+import android.util.Log;
+
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
@@ -8,34 +10,30 @@ import java.net.InetAddress;
  */
 public class NetworkRunnable implements Runnable {
 
+    private SynchronizedData networkSynchronizedData = new SynchronizedData();
     private RunNetworkCheck networkCheck;
-    private Runnable visibleData;
-    private RunNotificationCheck notificationCheck;
+    private RunPacketCollector packetCollector;
 
 //    public boolean getCollectData(){return collectData;}
 
     /**
      * The Socket.
      */
-    static DatagramSocket socket;
+    static DatagramSocket socket = setUpSocket(); //Use Glass IP address here
+
     /**
      * The Poll network.
      */
-    static boolean collectData =true;
+    static boolean collectData = true;
 
-    /**
-     * Get the boolean data.
-     *
-     * @return the boolean
-     */
-    public boolean getCollectData(){return collectData;}
+
 
     /**
      * Set poll network.
      *
      * @param a the poll network
      */
-    public static void setCollectData(boolean a){
+    public void setCollectData(boolean a){
         collectData = a;}
 
     /**
@@ -46,42 +44,64 @@ public class NetworkRunnable implements Runnable {
     public static DatagramSocket getSocket(){return socket;}
 
 
-    public NetworkRunnable(RunNetworkCheck mNetworkCheck, Runnable mVisibleData, RunNotificationCheck mNotificationCheck) {
-        this.networkCheck = mNetworkCheck;
-        this.visibleData = mVisibleData;
-        this.notificationCheck = mNotificationCheck;
+    public NetworkRunnable(){
+        networkCheck = new RunNetworkCheck(App.getContext());
+        packetCollector = new RunPacketCollector();
+
     }
 
-    public NetworkRunnable(Runnable mVisibleData)
-    {visibleData=mVisibleData;}
+    public NetworkRunnable(RunNetworkCheck mNetworkCheck, RunPacketCollector mPacketCollector) {
+        this.networkCheck = mNetworkCheck;
+        this.packetCollector = mPacketCollector;
+    }
 
+
+
+    private static DatagramSocket setUpSocket() {
+
+        DatagramSocket mSocket;
+        try {
+            mSocket = new DatagramSocket(61557, InetAddress.getByName("10.0.0.15"));
+        } catch (Exception e) {
+            mSocket = null;
+            e.printStackTrace();
+        }
+        return mSocket;
+    }
 
     @Override
     public void run() {
-        int count = 0;
         //check that the socket does not exist already before creating and binding it
-        if (socket == null) {
-            try {
-                socket = new DatagramSocket(61557, InetAddress.getByName("10.0.0.15")); //Use Glass IP address here
-                collectData = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
+//        if (socket == null) {
+//            try {
+//                socket = new DatagramSocket(61557, setUpAddress()); //Use Glass IP address here
+//                collectData = true;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+        Log.i("NetworkRunnable", "Runin");
         while(collectData) {
-            //alternate between these two
+            //NetworkCheck
             networkCheck.run();
-            if (networkCheck.getIsConnected()) {
-                visibleData.run();
-                notificationCheck.run();
+            networkSynchronizedData.setIsConnected(networkCheck.getIsConnected());
+            Log.i("isconnectset", String.valueOf(networkCheck.getIsConnected()));
+            if (networkCheck.getIsConnected())
+            {
+                packetCollector.run();
+                networkSynchronizedData.setReceivingData(packetCollector.getReceivingData());
+
+                if(packetCollector.getReceivingData())
+                {
+                    networkSynchronizedData.setPacketData(packetCollector.getDataBytes());
+                }
             }
         }
 
         try {
             socket.close();
         } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 }

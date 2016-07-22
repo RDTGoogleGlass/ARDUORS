@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,9 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.nio.ByteBuffer;
+import java.text.DecimalFormat;
+
 import static com.annaleonard.myfirstimmersion.R.id.force_pitch_val;
 import static com.annaleonard.myfirstimmersion.R.id.force_roll_val;
 import static com.annaleonard.myfirstimmersion.R.id.force_x_val;
@@ -37,19 +41,22 @@ public class ForceDataActivity extends Activity{
     /**TextSwitchers and ids that are used to update the xml layout displayed on the glass*/
     private TextSwitcher[] forceSwitcherArray = new TextSwitcher[6];
     /**Array containing text switchers for all forces view*/
-    private TextSwitcher desiredForce, desiredForceVal;
+    private TextSwitcher footer;
     /**Text Switchers for single forces view*/
 
-    private int[] switcherId = new int[]{force_x_val, force_y_val, force_z_val, force_roll_val, force_pitch_val, force_yaw_val};    //xml locations of switchers for all forces view
+    private int[] switcherId = new int[]{R.id.force_x_val, R.id.force_y_val, R.id.force_z_val, R.id.force_roll_val, R.id.force_pitch_val, R.id.force_yaw_val};    //xml locations of switchers for all forces view
+
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
     private String[] forceTitles = {"X", "Y", "Z", "Roll", "Pitch", "Yaw"};
 
+    SynchronizedData forceSyncData = new SynchronizedData();
 
-    /**
-     * The force string array.
-     */
-    String[] forceStringArray = new String[6];
+    DecimalFormat forceValformat = new DecimalFormat("0.00");   //format to specify sig figs
+
+
+    ByteBuffer forceData;
+
     /**
      * The Which force.
      */
@@ -57,9 +64,6 @@ public class ForceDataActivity extends Activity{
     /**
      * The M force data.
      */
-    RunForceData mForceData;
-    NetworkRunnable mNetworkRunnable;
-    Thread mThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -71,15 +75,14 @@ public class ForceDataActivity extends Activity{
 
         //Set up 7 text switchers for all forces view.  One for each force.
         makeAllForceTextSwitchers();
-
-        mThread = new Thread(mNetworkRunnable);
+        App.setContext(this);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        mUpdateForceVals.startUpdates();
+        mUpdateForceVals.startUpdates();
 
     }
 
@@ -129,6 +132,7 @@ public class ForceDataActivity extends Activity{
             case (R.id.showAllForces):
                 setContentView(R.layout.all_joints);
                 makeAllForceTextSwitchers();
+                App.setContext(this);
                 whichForce = -1;
                 return true;
             case (R.id.graph_single_force_option):
@@ -141,6 +145,7 @@ public class ForceDataActivity extends Activity{
 
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
+                App.setContext(this);
                 return true;
 
             case (R.id.showForceY):
@@ -149,6 +154,7 @@ public class ForceDataActivity extends Activity{
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
+                App.setContext(this);
                 return true;
 
             case (R.id.showForceZ):
@@ -157,6 +163,7 @@ public class ForceDataActivity extends Activity{
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
+                App.setContext(this);
                 return true;
 
             case (R.id.showForceRoll):
@@ -165,6 +172,7 @@ public class ForceDataActivity extends Activity{
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
+                App.setContext(this);
                 return true;
 
             case (R.id.showForcePitch):
@@ -173,6 +181,7 @@ public class ForceDataActivity extends Activity{
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
+                App.setContext(this);
                 return true;
 
             case (R.id.showForceYaw):
@@ -181,10 +190,12 @@ public class ForceDataActivity extends Activity{
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
+                App.setContext(this);
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
+
 
         }
     }
@@ -196,19 +207,20 @@ public class ForceDataActivity extends Activity{
         @Override
         public void run() {
             // do stuff ...
-            forceStringArray = mForceData.getForceStringArray();
+            forceData = forceSyncData.getPacketData();
             if (whichForce > 0) {
                 try {
-                    series.appendData(new DataPoint(lastX++, mForceData.getForceDoubles()[0]), true, 10);
+                    series.appendData(new DataPoint(lastX++, forceData.getDouble(8*(whichForce-1))), true, 10);
                 }
                 catch (NullPointerException e)
                 {
-                    Log.i("MeasuringActivity", "data not appended");
+                    Log.i("ForceDataActivity", "data not appended");
                     e.printStackTrace();
                 }
             } else {
                 for (int i = 0; i < 6; i++) {
-                    forceSwitcherArray[i].setText(forceStringArray[i]);
+                    forceSwitcherArray[i].setText(String.valueOf(forceValformat.format(forceData.getDouble(i*8))));
+
                 }
             }
         }
@@ -218,8 +230,8 @@ public class ForceDataActivity extends Activity{
 
     public void makeAllForceTextSwitchers() {
         for (int count = 0; count < 6; count++) {
-            final int i = count;
             forceSwitcherArray[count] = (TextSwitcher) findViewById(switcherId[count]);
+            Log.i("makeSwitcherCount", String.valueOf(forceSwitcherArray[count]!=null));
             forceSwitcherArray[count].setFactory(new ViewSwitcher.ViewFactory() {
                 public View makeView() {
                     TextView tv = new TextView(ForceDataActivity.this);
@@ -229,6 +241,7 @@ public class ForceDataActivity extends Activity{
             });
             forceSwitcherArray[count].setText("0.00");
         }
+        makeNotificationTextSwitcher();
     }
 
     /**
@@ -247,6 +260,20 @@ public class ForceDataActivity extends Activity{
         viewport.setScrollable(true);
         graph.setTitle(forceTitles[whichForce-1]);
         graph.setTitleTextSize(40);
+        makeNotificationTextSwitcher();
+    }
+
+    void makeNotificationTextSwitcher(){
+        footer = (TextSwitcher) findViewById(R.id.footer);
+        footer.setFactory(new ViewSwitcher.ViewFactory() {
+
+            @Override
+            public View makeView() {
+                TextView t = new TextView(getApplicationContext());
+                t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                return t;
+            }
+        });
     }
 
 

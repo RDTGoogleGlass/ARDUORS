@@ -13,7 +13,7 @@ public class RunNetworkCheck implements Runnable {
     /**
      * Boolean saving connection state.
      */
-    public boolean isConnected;
+    private static boolean isConnected = false;
     private Context context;
 
     /**
@@ -34,10 +34,12 @@ public class RunNetworkCheck implements Runnable {
     public RunNetworkCheck(Context c){context = c;}
 
     public void run() {
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        Log.i("RunNetworkcheck", "doobdoo");
+        ConnectivityManager cm = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        isConnected = (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
 
 
     }

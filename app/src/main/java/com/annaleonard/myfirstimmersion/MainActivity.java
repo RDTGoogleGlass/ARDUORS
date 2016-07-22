@@ -48,6 +48,9 @@ import java.util.List;
 public class MainActivity extends Activity {
 
 
+    Thread mThread;
+    NetworkRunnable networkRunnable = new NetworkRunnable();
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -55,7 +58,29 @@ public class MainActivity extends Activity {
         Log.i("MainAct super.onCreate", " ");
 
         setContentView(R.layout.main);
+        App.setContext(this);
+        mThread = new Thread(networkRunnable);
+        mThread.start();
+        Log.i("Thread started", "tada!");
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onDestroy()  {
+        super.onDestroy();
+        networkRunnable.setCollectData(false);
+        try {
+            mThread.join();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,6 +88,7 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+
         return true;
     }
 
