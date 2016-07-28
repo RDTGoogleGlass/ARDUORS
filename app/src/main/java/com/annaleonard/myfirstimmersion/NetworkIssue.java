@@ -1,5 +1,6 @@
 package com.annaleonard.myfirstimmersion;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -80,4 +81,11 @@ public class NetworkIssue extends Dialog {
             getContext().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
     };
+
+
+    @Override
+    public void setOnCancelListener(OnCancelListener listener) {
+        super.setOnCancelListener(listener);
+        ((Activity) getContext()).finish();
+    }
 }

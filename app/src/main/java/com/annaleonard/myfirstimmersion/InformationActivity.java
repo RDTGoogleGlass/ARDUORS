@@ -26,8 +26,6 @@ import java.util.List;
  */
 public class InformationActivity extends Activity {
 
-    private CardScrollView mCardScrollView; //horizontal view that shows scrolling cards
-    private CardScrollAdapter mCardScrollAdapter; //supplies cards from mCards to mCardScrollView
     private List<CardBuilder> mCards;   //a list to store cards made with CardBuilder
 
     @Override
@@ -53,8 +51,8 @@ public class InformationActivity extends Activity {
     }
 
     private void publishCards(){
-        mCardScrollView = new CardScrollView(this);
-        mCardScrollAdapter = new CardScrollAdapter() {
+        CardScrollView mCardScrollView = new CardScrollView(this);
+        CardScrollAdapter mCardScrollAdapter = new CardScrollAdapter() {
             @Override
             public int getCount() {
                 return mCards.size();
@@ -76,7 +74,7 @@ public class InformationActivity extends Activity {
             }
 
             @Override
-            public int getItemViewType(int position){
+            public int getItemViewType(int position) {
                 return mCards.get(position).getItemViewType();
             }
 

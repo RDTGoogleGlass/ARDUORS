@@ -38,7 +38,7 @@
                 android:text="X: "
                 android:textSize = "30sp"
                 android:gravity="center_horizontal"/>
-            <TextSwitcher
+            <TextView
                 android:id="@+id/force_x_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -58,7 +58,7 @@
                 android:text="Y: "
                 android:textSize = "30sp"
                 android:gravity="center_horizontal"/>
-            <TextSwitcher
+            <TextView
                 android:id="@+id/force_y_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -78,7 +78,7 @@
                 android:text="Z: "
                 android:textSize = "30sp"
                 android:gravity="center_horizontal"/>
-            <TextSwitcher
+            <TextView
                 android:id="@+id/force_z_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:text="Roll: "
                 android:textSize = "30sp"/>
-            <TextSwitcher
+            <TextView
                 android:id="@+id/force_roll_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="Pitch: "
                 android:textSize = "30sp"/>
-            <TextSwitcher
+            <TextView
                 android:id="@+id/force_pitch_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:text="Yaw: "
             android:textSize = "30sp"/>
-        <TextSwitcher
+        <TextView
             android:id="@+id/force_yaw_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

@@ -3,7 +3,6 @@ package com.annaleonard.myfirstimmersion;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 /**
  * Created by gglass on 6/24/16.
@@ -34,7 +33,6 @@ public class RunNetworkCheck implements Runnable {
     public RunNetworkCheck(Context c){context = c;}
 
     public void run() {
-        Log.i("RunNetworkcheck", "doobdoo");
         ConnectivityManager cm = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

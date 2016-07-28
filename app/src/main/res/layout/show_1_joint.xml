@@ -23,12 +23,12 @@
             android:orientation="vertical"
             android:layout_centerInParent="true"
             android:gravity="center">
-            <TextSwitcher
+            <TextView
                 android:id="@+id/desired_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextSwitcher
+            <TextView
                 android:id="@+id/desired_data_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

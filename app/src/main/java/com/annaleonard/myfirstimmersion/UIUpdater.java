@@ -1,22 +1,13 @@
 package com.annaleonard.myfirstimmersion;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.TextSwitcher;
-import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
-import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import java.util.Map;
 
 /**
  * A class used to perform periodical updates,
@@ -61,20 +52,17 @@ public class UIUpdater {
             public void run() {
                 // Run the passed runnable
                 context = App.getContext();
-                Log.i("IsNetConnect?", String.valueOf(notificationSynchronizedData.getIsConnected()));
 
 
                 if(noInternet==null)
                 {
                     noInternet = new NetworkIssue(context, R.drawable.ic_cloud_sad_150, R.string.no_internet_text, R.string.alert_footnote_text);
-                    noInternet.setCancelable(false);
                 }
 
                 if (notificationSynchronizedData.getIsConnected())
                 {
                     if(noData==null) {
                         noData = new NetworkIssue(context, R.drawable.ic_warning_150, R.string.no_data_text, R.string.alert_footnote_text);
-                        noData.setCancelable(false);
                     }
                     if(noInternet.isShowing())
                     {

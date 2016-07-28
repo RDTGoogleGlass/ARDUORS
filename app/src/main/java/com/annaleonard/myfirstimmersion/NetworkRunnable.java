@@ -1,5 +1,6 @@
 package com.annaleonard.myfirstimmersion;
 
+
 import android.util.Log;
 
 import java.net.DatagramSocket;
@@ -19,12 +20,12 @@ public class NetworkRunnable implements Runnable {
     /**
      * The Socket.
      */
-    static DatagramSocket socket = setUpSocket(); //Use Glass IP address here
+    private static DatagramSocket socket = setUpSocket(); //Use Glass IP address here
 
     /**
      * The Poll network.
      */
-    static boolean collectData = true;
+    static private boolean collectData = true;
 
 
 
@@ -34,6 +35,7 @@ public class NetworkRunnable implements Runnable {
      * @param a the poll network
      */
     public void setCollectData(boolean a){
+        Log.i("NetworkRunnable", "setCollectData " + String.valueOf(a));
         collectData = a;}
 
     /**
@@ -69,37 +71,34 @@ public class NetworkRunnable implements Runnable {
         return mSocket;
     }
 
+    int count;
     @Override
     public void run() {
-        //check that the socket does not exist already before creating and binding it
-//        if (socket == null) {
-//            try {
-//                socket = new DatagramSocket(61557, setUpAddress()); //Use Glass IP address here
-//                collectData = true;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-        Log.i("NetworkRunnable", "Runin");
-        while(collectData) {
-            //NetworkCheck
-            networkCheck.run();
-            networkSynchronizedData.setIsConnected(networkCheck.getIsConnected());
-            Log.i("isconnectset", String.valueOf(networkCheck.getIsConnected()));
-            if (networkCheck.getIsConnected())
-            {
-                packetCollector.run();
-                networkSynchronizedData.setReceivingData(packetCollector.getReceivingData());
+        Log.i("NetworkRunnable", "run called");
 
-                if(packetCollector.getReceivingData())
-                {
-                    networkSynchronizedData.setPacketData(packetCollector.getDataBytes());
+        if (socket.isBound())
+        {
+            while(collectData) {
+                //NetworkCheck
+                count++;
+                networkCheck.run();
+                networkSynchronizedData.setIsConnected(networkCheck.getIsConnected());
+                if (networkCheck.getIsConnected()) {
+                    Log.i("NetworkRunnable", "internet connected");
+                    packetCollector.run();
+                    networkSynchronizedData.setReceivingData(packetCollector.getReceivingData());
+                    if (packetCollector.getReceivingData()) {
+                        networkSynchronizedData.setPacketData(packetCollector.getDataBytes());
+                    }
                 }
+                Log.i("NetworkRunnable", "While loop running " + String.valueOf(count));
             }
         }
 
         try {
             socket.close();
+            Log.i("NetworkRunnable", "while loop exited");
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

@@ -16,7 +16,6 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.view.WindowUtils;
 import com.jjoe64.graphview.GraphView;
@@ -27,43 +26,41 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 
-import static com.annaleonard.myfirstimmersion.R.id.force_pitch_val;
-import static com.annaleonard.myfirstimmersion.R.id.force_roll_val;
-import static com.annaleonard.myfirstimmersion.R.id.force_x_val;
-import static com.annaleonard.myfirstimmersion.R.id.force_y_val;
-import static com.annaleonard.myfirstimmersion.R.id.force_yaw_val;
-import static com.annaleonard.myfirstimmersion.R.id.force_z_val;
-
 /**
- * Created by rdtintern on 7/19/16.
+ * Created by rdtintern on 6/19/16.
  */
-public class ForceDataActivity extends Activity{
-    /**TextSwitchers and ids that are used to update the xml layout displayed on the glass*/
-    private TextSwitcher[] forceSwitcherArray = new TextSwitcher[6];
-    /**Array containing text switchers for all forces view*/
+public class ForceDataActivity extends Activity {
+    /**TextViews and ids that are used to update the xml layout displayed on the glass*/
+    private TextView[] forceViewArray = new TextView[6];
+    /**Array containing text views for all forces view*/
+    private TextView desiredForce, desiredForcePos;
     private TextSwitcher footer;
-    /**Text Switchers for single forces view*/
-
-    private int[] switcherId = new int[]{R.id.force_x_val, R.id.force_y_val, R.id.force_z_val, R.id.force_roll_val, R.id.force_pitch_val, R.id.force_yaw_val};    //xml locations of switchers for all forces view
-
-    private LineGraphSeries<DataPoint> series;
-    private int lastX = 0;
+    /**Text Views for single forces view*/
     private String[] forceTitles = {"X", "Y", "Z", "Roll", "Pitch", "Yaw"};
+    private int[] viewId = {R.id.force_x_val, R.id.force_y_val, R.id.force_z_val, R.id.force_roll_val, R.id.force_pitch_val, R.id.force_yaw_val};    //xml locations of views for all forces view
+    private int lastX = 0;
+
+    /**
+     * The Force pos format.
+     */
+    DecimalFormat forcePosFormat = new DecimalFormat("0.00");   //format to specify sig figs
 
     SynchronizedData forceSyncData = new SynchronizedData();
 
-    DecimalFormat forceValformat = new DecimalFormat("0.00");   //format to specify sig figs
-
+    private LineGraphSeries<DataPoint> series;
 
     ByteBuffer forceData;
+
+    /**
+     * The Force double array.
+     */
+    double[] forceDataArray = new double[6];
 
     /**
      * The Which force.
      */
     int whichForce = -1;
-    /**
-     * The M force data.
-     */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -73,8 +70,8 @@ public class ForceDataActivity extends Activity{
         getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);//Enable voice activated menu
         setContentView(R.layout.all_forces);  //Set the desired layout to display on screen
 
-        //Set up 7 text switchers for all forces view.  One for each force.
-        makeAllForceTextSwitchers();
+        //Set up 6 text views for all force view.  One for each force.
+        makeAllForceTextViews();
         App.setContext(this);
 
     }
@@ -83,6 +80,7 @@ public class ForceDataActivity extends Activity{
     protected void onStart() {
         super.onStart();
         mUpdateForceVals.startUpdates();
+
 
     }
 
@@ -95,6 +93,7 @@ public class ForceDataActivity extends Activity{
     protected void onPause(){
         super.onPause();
     }
+
 
     @Override
     protected void onStop(){
@@ -130,27 +129,28 @@ public class ForceDataActivity extends Activity{
         // Handle item selection
         switch (item.getItemId()) {
             case (R.id.showAllForces):
-                setContentView(R.layout.all_joints);
-                makeAllForceTextSwitchers();
-                App.setContext(this);
+                setContentView(R.layout.all_forces);
+                makeAllForceTextViews();
                 whichForce = -1;
+                App.setContext(this);
                 return true;
             case (R.id.graph_single_force_option):
-                //sets view to single force layout, but does not set switchers
+                //sets view to single force layout, but does not set views
                 return true;
 
-            //each option below individually sets the switchers in the single force view to display the name and data for that particular force.
+            //each option below individually sets the views in the single force view to display the name and data for that particular force.
             case (R.id.showForceX):
-                whichForce = 1;
 
+                whichForce = 1;
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
+
                 App.setContext(this);
                 return true;
 
             case (R.id.showForceY):
-                whichForce = 2;
 
+                whichForce = 2;
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
@@ -158,8 +158,8 @@ public class ForceDataActivity extends Activity{
                 return true;
 
             case (R.id.showForceZ):
-                whichForce = 3;
 
+                whichForce = 3;
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
@@ -167,8 +167,8 @@ public class ForceDataActivity extends Activity{
                 return true;
 
             case (R.id.showForceRoll):
-                whichForce = 4;
 
+                whichForce = 4;
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
@@ -176,8 +176,8 @@ public class ForceDataActivity extends Activity{
                 return true;
 
             case (R.id.showForcePitch):
-                whichForce = 5;
 
+                whichForce = 5;
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
@@ -185,17 +185,17 @@ public class ForceDataActivity extends Activity{
                 return true;
 
             case (R.id.showForceYaw):
-                whichForce = 6;
 
+                whichForce = 6;
                 setContentView(R.layout.show_general_graph);
                 setUpGraph();
 
                 App.setContext(this);
                 return true;
+            
 
             default:
                 return super.onOptionsItemSelected(item);
-
 
         }
     }
@@ -212,41 +212,37 @@ public class ForceDataActivity extends Activity{
                 try {
                     series.appendData(new DataPoint(lastX++, forceData.getDouble(8*(whichForce-1))), true, 10);
                 }
-                catch (NullPointerException e)
+                catch (Exception e)
                 {
-                    Log.i("ForceDataActivity", "data not appended");
                     e.printStackTrace();
                 }
             } else {
                 for (int i = 0; i < 6; i++) {
-                    forceSwitcherArray[i].setText(String.valueOf(forceValformat.format(forceData.getDouble(i*8))));
-
+                    forceViewArray[i].setText(String.valueOf(forcePosFormat.format(forceData.getDouble(i*8))));
                 }
             }
         }
 
     });
 
-
-    public void makeAllForceTextSwitchers() {
-        for (int count = 0; count < 6; count++) {
-            forceSwitcherArray[count] = (TextSwitcher) findViewById(switcherId[count]);
-            Log.i("makeSwitcherCount", String.valueOf(forceSwitcherArray[count]!=null));
-            forceSwitcherArray[count].setFactory(new ViewSwitcher.ViewFactory() {
-                public View makeView() {
-                    TextView tv = new TextView(ForceDataActivity.this);
-                    tv.setTextSize(30);
-                    return tv;
-                }
-            });
-            forceSwitcherArray[count].setText("0.00");
-        }
+    /**
+     * Make all force text views.
+     */
+    public void makeAllForceTextViews() {
         makeNotificationTextSwitcher();
+        for (int count = 0; count < 6; count++) {
+            final int i = count;
+            forceViewArray[count] = (TextView) findViewById(viewId[count]);
+            Log.i("View " + String.valueOf(count), String.valueOf(forceViewArray[count]));
+            forceViewArray[count].setText("0.00");
+        }
     }
 
     /**
-     * Make single joint text switchers.
+     * Make single force text views.
      */
+
+
     void setUpGraph() {
         GraphView graph = (GraphView) findViewById(R.id.graph);
         // data
@@ -275,8 +271,4 @@ public class ForceDataActivity extends Activity{
             }
         });
     }
-
-
-
-
 }
