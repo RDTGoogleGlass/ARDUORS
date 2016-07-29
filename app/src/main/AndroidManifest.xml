@@ -18,7 +18,8 @@
         android:immersive="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name="com.annaleonard.myfirstimmersion.App">
 
 
 
@@ -43,15 +44,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.annaleonard.myfirstimmersion.MainActivity" />
         </activity>
+
         <activity
-            android:name=".MeasuringActivity"
-            android:label="@string/title_activity_measuring"
+            android:name=".JointDataActivity"
+            android:label="@string/title_activity_jointdata"
             android:parentActivityName=".MainActivity"
             android:theme="@style/MeasuringActivityTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.annaleonard.myfirstimmersion.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ForceDataActivity"
+            android:label="@string/title_activity_forcedata"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/MeasuringActivityTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.annaleonard.myfirstimmersion.MainActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

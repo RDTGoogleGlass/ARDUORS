@@ -3,7 +3,6 @@ package com.annaleonard.myfirstimmersion;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 /**
  * Created by gglass on 6/24/16.
@@ -13,7 +12,7 @@ public class RunNetworkCheck implements Runnable {
     /**
      * Boolean saving connection state.
      */
-    public boolean isConnected;
+    private static boolean isConnected = false;
     private Context context;
 
     /**
@@ -21,7 +20,8 @@ public class RunNetworkCheck implements Runnable {
      *
      * @return isConnected
      */
-    public boolean getIsConnected() {
+
+    public synchronized boolean getIsConnected() {
         return isConnected;
     }
 
@@ -34,10 +34,11 @@ public class RunNetworkCheck implements Runnable {
     public RunNetworkCheck(Context c){context = c;}
 
     public void run() {
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        isConnected = (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
 
 
     }

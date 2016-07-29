@@ -4,7 +4,6 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     >
 
     <RelativeLayout
@@ -15,7 +14,6 @@
         android:layout_marginTop="@dimen/glass_card_margin"
         android:layout_marginRight="@dimen/glass_card_margin"
         tools:ignore="UselessLeaf"
-
         >
 
         <!-- Put your widgets inside this RelativeLayout. -->
@@ -27,147 +25,125 @@
             android:layout_centerHorizontal="true"  />
 
 
+
         <LinearLayout
-            android:id="@+id/joint_a"
-            android:layout_width="187dp"
-            android:layout_height="40dp"
+            android:id="@+id/force_x"
+            android:layout_width="280px"
+            android:layout_height="93px"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/joint_a_title"
+                android:id="@+id/force_x_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/joint1"
-                android:textSize = "26sp"
+                android:text="X: "
+                android:textSize = "30sp"
                 android:gravity="center_horizontal"/>
-            <TextSwitcher
-                android:id="@+id/joint_a_val"
+            <TextView
+                android:id="@+id/force_x_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/joint_b"
+            android:id="@+id/force_y"
             android:layout_width="187dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/joint_a"
+            android:layout_height="93px"
+            android:layout_below="@id/force_x"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/joint_b_title"
+                android:id="@+id/force_y_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/joint2"
-                android:textSize = "26sp"/>
-            <TextSwitcher
-                android:id="@+id/joint_b_val"
+                android:text="Y: "
+                android:textSize = "30sp"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:id="@+id/force_y_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/joint_c"
+            android:id="@+id/force_z"
             android:layout_width="187dp"
-            android:layout_height="40dp"
-            android:layout_below = "@id/joint_b"
+            android:layout_height="93px"
+            android:layout_below="@id/force_y"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/joint_c_title"
+                android:id="@+id/force_z_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/joint3"
-                android:textSize = "26sp"/>
-            <TextSwitcher
-                android:id="@+id/joint_c_val"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:id="@+id/joint_d"
-            android:layout_width="187dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/joint_c"
-            android:orientation="horizontal">
+                android:text="Z: "
+                android:textSize = "30sp"
+                android:gravity="center_horizontal"/>
             <TextView
-                android:id="@+id/joint_d_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/joint4"
-                android:textSize = "26sp"/>
-            <TextSwitcher
-                android:id="@+id/joint_d_val"
+                android:id="@+id/force_z_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <View
-            android:id="@+id/stagger"
-            android:layout_width="fill_parent"
-            android:layout_height= "13sp"
-            android:layout_centerHorizontal="true"  />
-
 
         <LinearLayout
-            android:id="@+id/joint_e"
+            android:id="@+id/force_roll"
             android:layout_width="187dp"
-            android:layout_height="40dp"
+            android:layout_height="93px"
             android:layout_toRightOf="@id/middle_line"
-            android:layout_below ="@id/stagger"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/joint_e_title"
+                android:id="@+id/force_roll_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/joint5"
-                android:textSize = "26sp"/>
-            <TextSwitcher
-                android:id="@+id/joint_e_val"
+                android:text="Roll: "
+                android:textSize = "30sp"/>
+            <TextView
+                android:id="@+id/force_roll_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/joint_f"
+            android:id="@+id/force_pitch"
             android:layout_width="187dp"
-            android:layout_height="40dp"
+            android:layout_height="93px"
             android:layout_toRightOf="@id/middle_line"
-            android:layout_below="@id/joint_e"
+            android:layout_below="@id/force_roll"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/joint_f_title"
+                android:id="@+id/force_pitch_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/joint6"
-                android:textSize = "26sp"/>
-            <TextSwitcher
-                android:id="@+id/joint_f_val"
+                android:text="Pitch: "
+                android:textSize = "30sp"/>
+            <TextView
+                android:id="@+id/force_pitch_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/joint_g"
-            android:layout_width="187dp"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@id/middle_line"
-            android:layout_below="@id/joint_f"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/joint_g_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/joint7"
-                android:textSize = "26sp"/>
-            <TextSwitcher
-                android:id="@+id/joint_g_val"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        android:id="@+id/force_yaw"
+        android:layout_width="187dp"
+        android:layout_height="93px"
+        android:layout_toRightOf="@id/middle_line"
+        android:layout_below="@id/force_pitch"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/force_yaw_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yaw: "
+            android:textSize = "30sp"/>
+        <TextView
+            android:id="@+id/force_yaw_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
 
     </RelativeLayout>
 
@@ -180,12 +156,11 @@
         android:layout_marginBottom="@dimen/glass_card_footer_margin"
         android:layout_marginRight="@dimen/glass_card_margin"
         android:orientation="horizontal"
-
         >
 
         <!-- The footer view will grow to fit as much content as possible while the
              timestamp view keeps a fixed width. If the footer text is too long, it
-             will be ellipsized with a 40px margin between it and the timestamp. -->
+             will be ellipsized with a 30px margin between it and the timestamp. -->
 
         <TextSwitcher
             android:id="@+id/footer"
@@ -199,8 +174,6 @@
             android:textAlignment="center"/>
 
 
-
-
         <TextClock
             android:id="@+id/textClock"
             android:layout_width="wrap_content"
@@ -208,22 +181,10 @@
             android:layout_marginLeft="@dimen/glass_card_margin"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
 
     </LinearLayout>
 
 </FrameLayout>
-
-
-    <!--
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:clickable="true"
-        android:onClick="onClick"
-        tools:context="com.annaleonard.myfirstimmersion.MeasuringActivity">
-    </RelativeLayout>
-    -->
