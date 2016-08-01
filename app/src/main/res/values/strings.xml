@@ -7,12 +7,6 @@
     <string name="information">Information</string>
     <string name="title_activity_information">Information Activity</string>
 
-    <string name="start_measuring">Start Measuring</string>
-    <string name="title_activity_measuring">MeasuringActivity</string>
-
-    <string name="start_graph">Start Graph</string>
-    <string name="title_activity_graph">GraphActivity</string>
-
 
     <string name="joint1">Joint 1: \u0020</string>
     <string name="joint2">Joint 2: \u0020</string>
@@ -22,7 +16,6 @@
     <string name="joint6">Joint 6: \u0020</string>
     <string name="joint7">Joint 7: \u0020</string>
 
-    <string name="double_joint_trigger">Show 2 Joints</string>
     <string name="single_joint_trigger">Show Joint</string>
     <string name="joint_1_trigger">1</string>
     <string name="joint_2_trigger">2</string>
@@ -31,13 +24,8 @@
     <string name="joint_5_trigger">5</string>
     <string name="joint_6_trigger">6</string>
     <string name="joint_7_trigger">7</string>
-    <string name="show_general_graph">Show Graph</string>
     <string name="all_joints_trigger">Show All Joints</string>
 
-    <string name="single_joint_title">Single Joint Display</string>
-    <string name="example_joint_value">163.51</string>
-
-    <string name="no_internet_connection">No Internet Connection</string>
 
     <string name="arduors">ARDUORS</string>
     <string name="splash_text_1">Tap twice to start measuring.</string>

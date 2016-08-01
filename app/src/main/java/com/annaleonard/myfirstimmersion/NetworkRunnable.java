@@ -7,12 +7,12 @@ import java.net.InetAddress;
 /**
  * Created by gglass on 6/24/16.
  */
-public class NetworkRunnable implements Runnable {
+class NetworkRunnable implements Runnable {
 
 
-    private SynchronizedData networkSynchronizedData = new SynchronizedData();
-    private RunNetworkCheck networkCheck;
-    private RunPacketCollector packetCollector;
+    private final SynchronizedData NET_SYNC_DATA = new SynchronizedData();
+    private final RunNetworkCheck NET_CHECK;
+    private final RunPacketCollector PACKET_COLLECTOR;
 
 //    public boolean getCollectData(){return collectData;}
 
@@ -20,7 +20,7 @@ public class NetworkRunnable implements Runnable {
      * The Socket.
      */
 
-    private static DatagramSocket socket = setUpSocket(); //Use Glass IP address here
+    private static final DatagramSocket SOCKET = setUpSocket(); //Use Glass IP address here
 
     /**
      * The Poll network.
@@ -40,23 +40,19 @@ public class NetworkRunnable implements Runnable {
         collectData = a;}
 
     /**
-     * Get datagram socket.
+     * Get datagram SOCKET.
      *
-     * @return the datagram socket
+     * @return the datagram SOCKET
      */
-    public static DatagramSocket getSocket(){return socket;}
+    public static DatagramSocket getSocket(){return SOCKET;}
 
 
     public NetworkRunnable(){
-        networkCheck = new RunNetworkCheck(App.getContext());
-        packetCollector = new RunPacketCollector();
+        NET_CHECK = new RunNetworkCheck(App.getContext());
+        PACKET_COLLECTOR = new RunPacketCollector();
 
     }
 
-    public NetworkRunnable(RunNetworkCheck mNetworkCheck, RunPacketCollector mPacketCollector) {
-        this.networkCheck = mNetworkCheck;
-        this.packetCollector = mPacketCollector;
-    }
 
 
 
@@ -72,24 +68,24 @@ public class NetworkRunnable implements Runnable {
         return mSocket;
     }
 
-    int count;
+    private int count;
     @Override
     public void run() {
         Log.i("NetworkRunnable", "run called");
 
-        if (socket.isBound())
+        if (SOCKET.isBound())
         {
             while(collectData) {
                 //NetworkCheck
                 count++;
-                networkCheck.run();
-                networkSynchronizedData.setIsConnected(networkCheck.getIsConnected());
-                if (networkCheck.getIsConnected()) {
+                NET_CHECK.run();
+                NET_SYNC_DATA.setIsConnected(NET_CHECK.getIsConnected());
+                if (NET_CHECK.getIsConnected()) {
                     Log.i("NetworkRunnable", "internet connected");
-                    packetCollector.run();
-                    networkSynchronizedData.setReceivingData(packetCollector.getReceivingData());
-                    if (packetCollector.getReceivingData()) {
-                        networkSynchronizedData.setPacketData(packetCollector.getDataBytes());
+                    PACKET_COLLECTOR.run();
+                    NET_SYNC_DATA.setReceivingData(PACKET_COLLECTOR.getReceivingData());
+                    if (PACKET_COLLECTOR.getReceivingData()) {
+                        NET_SYNC_DATA.setPacketData(PACKET_COLLECTOR.getDataBytes());
                     }
                 }
                 Log.i("NetworkRunnable", "While loop running " + String.valueOf(count));
@@ -97,7 +93,7 @@ public class NetworkRunnable implements Runnable {
         }
 
         try {
-            socket.close();
+            SOCKET.close();
             Log.i("NetworkRunnable", "while loop exited");
 
         } catch (NullPointerException e) {

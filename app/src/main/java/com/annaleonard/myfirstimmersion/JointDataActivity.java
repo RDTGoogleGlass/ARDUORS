@@ -25,34 +25,27 @@ import java.text.DecimalFormat;
 /**
  * Created by rdtintern on 7/19/16.
  */
+@SuppressWarnings("ALL")
 public class JointDataActivity extends Activity {
     /**TextViews and ids that are used to update the xml layout displayed on the glass*/
-    private TextView[] jointViewArray = new TextView[7];
+    private final TextView[] JOINT_VIEW_ARRAY = new TextView[7];
     /**Array containing text views for all joints view*/
     private TextView desiredJoint, desiredJointPos;
-    private TextSwitcher footer;
     /**Text Views for single joints view*/
-    private int[] viewId = {R.id.joint_a_val, R.id.joint_b_val, R.id.joint_c_val, R.id.joint_d_val, R.id.joint_e_val, R.id.joint_f_val, R.id.joint_g_val};    //xml locations of views for all joints view
+    private final int[] VIEW_ID = {R.id.joint_a_val, R.id.joint_b_val, R.id.joint_c_val, R.id.joint_d_val, R.id.joint_e_val, R.id.joint_f_val, R.id.joint_g_val};    //xml locations of views for all joints view
 
     /**
      * The Joint pos format.
      */
-    DecimalFormat jointPosFormat = new DecimalFormat("0.00");   //format to specify sig figs
+    private final DecimalFormat JOINT_POS_FORMAT = new DecimalFormat("0.00");   //format to specify sig figs
 
-    SynchronizedData jointSyncData = new SynchronizedData();
+    private final SynchronizedData JOINT_SYNC_DATA = new SynchronizedData();
 
-
-    ByteBuffer jointData;
-
-    /**
-     * The Joint double array.
-     */
-    double[] jointDataArray = new double[7];
 
     /**
      * The Which joint.
      */
-    int whichJoint = -1;
+    private int whichJoint = -1;
 
 
     @Override
@@ -72,32 +65,18 @@ public class JointDataActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        mUpdateJointVals.startUpdates();
+        UPDATE_JOINT_VALS.startUpdates();
 
 
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
     }
 
 
     @Override
     protected void onStop(){
         super.onStop();
-        mUpdateJointVals.stopUpdates();
+        UPDATE_JOINT_VALS.stopUpdates();
     }
 
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -211,16 +190,16 @@ public class JointDataActivity extends Activity {
     /**
      * The M update joint vals.
      */
-    UIUpdater mUpdateJointVals = new UIUpdater(new Runnable() {
+    private final UIUpdater UPDATE_JOINT_VALS = new UIUpdater(new Runnable() {
         @Override
         public void run() {
             // do stuff ...
-            jointData = jointSyncData.getPacketData();
+            ByteBuffer jointData = JOINT_SYNC_DATA.getPacketData();
             if (whichJoint > 0) {
-                desiredJointPos.setText(String.valueOf(jointPosFormat.format(jointData.getDouble((whichJoint-1)*8))));
+                desiredJointPos.setText(String.valueOf(JOINT_POS_FORMAT.format(jointData.getDouble((whichJoint-1)*8))));
             } else {
                 for (int i = 0; i < 7; i++) {
-                    jointViewArray[i].setText(String.valueOf(jointPosFormat.format(jointData.getDouble(i*8))));
+                    JOINT_VIEW_ARRAY[i].setText(String.valueOf(JOINT_POS_FORMAT.format(jointData.getDouble(i*8))));
                 }
             }
         }
@@ -230,28 +209,25 @@ public class JointDataActivity extends Activity {
     /**
      * Make all joint text views.
      */
-    public void makeAllJointTextViews() {
+    private void makeAllJointTextViews() {
         makeNotificationTextSwitcher();
         for (int count = 0; count < 7; count++) {
-            final int i = count;
-            jointViewArray[count] = (TextView) findViewById(viewId[count]);
-            Log.i("View " + String.valueOf(count), String.valueOf(jointViewArray[count]));
-            jointViewArray[count].setText("0.00");
+            JOINT_VIEW_ARRAY[count] = (TextView) findViewById(VIEW_ID[count]);
+            Log.i("View " + String.valueOf(count), String.valueOf(JOINT_VIEW_ARRAY[count]));
         }
     }
 
     /**
      * Make single force text views.
      */
-    void makeSingleJointTextViews() {
+    private void makeSingleJointTextViews() {
         makeNotificationTextSwitcher();
         desiredJoint = (TextView) findViewById(R.id.desired_joint);//attaches each view to its xml id
-        desiredJointPos = (TextView) findViewById(R.id.desired_joint_pos);//attaches each view to its xml id
-        desiredJointPos.setText("0.00");
+        desiredJointPos = (TextView) findViewById(R.id.desired_joint_pos);//attaches each view to its xml id);
     }
 
-    void makeNotificationTextSwitcher(){
-        footer = (TextSwitcher) findViewById(R.id.footer);
+    private void makeNotificationTextSwitcher(){
+        TextSwitcher footer = (TextSwitcher) findViewById(R.id.footer);
         footer.setFactory(new ViewSwitcher.ViewFactory() {
 
             @Override

@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by rdtintern on 7/20/16.
  */
-public class SynchronizedData {
+class SynchronizedData {
 
     private static boolean isConnected = false;
     private static boolean receivingData = false;

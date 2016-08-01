@@ -13,7 +13,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
+import android.view.WindowManager;
 
 
 /**
@@ -22,17 +22,20 @@ import android.view.MenuItem;
  */
 public class MainActivity extends Activity {
 
-    Thread mThread;
-    NetworkRunnable networkRunnable = new NetworkRunnable();
+    private Thread mThread;
+    private final NetworkRunnable NETWORK_RUNNABLE = new NetworkRunnable();
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        Log.i("MainActivity", "onCreate called");
 
 
         setContentView(R.layout.main);
         App.setContext(this);
-        mThread = new Thread(networkRunnable);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //Keeps activity awake
+
+        mThread = new Thread(NETWORK_RUNNABLE);
         mThread.start();
 
 
@@ -42,14 +45,39 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i("MainActivity", "onStart called");
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.i("MainActivity", "onResume called");
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        Log.i("MainActivity", "onRestart called");
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.i("MainActivity", "onPause called");
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.i("MainActivity", "onStop called");
     }
 
     @Override
     protected void onDestroy()  {
         super.onDestroy();
         Log.i("MainActivity", "onDestroy called");
-        networkRunnable.setCollectData(false);
+        NETWORK_RUNNABLE.setCollectData(false);
         Log.i("MainActivity", "Flag set");
         try {
             Log.i("MainActivity, OnDestroy", "Try entered");

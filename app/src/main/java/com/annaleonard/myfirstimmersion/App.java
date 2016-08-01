@@ -7,7 +7,8 @@ import android.speech.tts.TextToSpeech;
 /**
  * Created by rdtintern on 7/22/16.
  */
-public class App extends Application implements TextToSpeech.OnInitListener {
+@SuppressWarnings("ALL")
+class App extends Application implements TextToSpeech.OnInitListener {
 
     private static Context mContext;
 

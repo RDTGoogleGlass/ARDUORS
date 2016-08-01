@@ -7,13 +7,12 @@ import android.net.NetworkInfo;
 /**
  * Created by gglass on 6/24/16.
  */
-public class RunNetworkCheck implements Runnable {
+class RunNetworkCheck implements Runnable {
 
     /**
      * Boolean saving connection state.
      */
     private static boolean isConnected = false;
-    private Context context;
 
     /**
      * Gets isConnected.
@@ -28,10 +27,8 @@ public class RunNetworkCheck implements Runnable {
 
     /**
      * Instantiates a new Run network check.
-     *
-     * @param c the Context
      */
-    public RunNetworkCheck(Context c){context = c;}
+    public RunNetworkCheck(){}
 
     public void run() {
         ConnectivityManager cm = (ConnectivityManager)App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);

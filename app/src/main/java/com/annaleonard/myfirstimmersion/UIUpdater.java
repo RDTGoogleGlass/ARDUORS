@@ -17,13 +17,13 @@ import java.nio.ByteBuffer;
  *
  * @author Carlos Simões
  */
-public class UIUpdater {
+class UIUpdater {
     // Create a Handler that uses the Main Looper to run in
     private Handler mHandler = new Handler(Looper.getMainLooper());
-    Context context;
+    private Context context;
     private Runnable mStatusChecker;
     private int UPDATE_INTERVAL = 50;
-    SynchronizedData notificationSynchronizedData = new SynchronizedData();
+    private SynchronizedData notificationSynchronizedData = new SynchronizedData();
 
     private final DialogInterface.OnClickListener mOnClickListener = new DialogInterface.OnClickListener() {
         @Override
@@ -34,10 +34,10 @@ public class UIUpdater {
     };
 
 
-    static NetworkIssue noInternet;
+    private static NetworkIssue noInternet;
     //    noInternet.setCancelable(false);
 
-    static NetworkIssue noData;
+    private static NetworkIssue noData;
 //    noData.setCancelable(false);
 
     /**
@@ -79,7 +79,7 @@ public class UIUpdater {
                         //UiUpdater instance created in the Activity method and updates the visible data.
                         uiUpdater.run();
 
-                        //run notficationChecker here:
+                        //run notificationChecker here:
                         ByteBuffer currentData = notificationSynchronizedData.getPacketData();
                         //parse notifications out of ByteBuffer
 

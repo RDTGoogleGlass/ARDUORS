@@ -8,21 +8,17 @@ import java.nio.ByteOrder;
 /**
  * Created by rdtintern on 7/21/16.
  */
-public class RunPacketCollector implements Runnable{
-    /**
-     * The packet.
-     */
-    DatagramPacket packet;
+class RunPacketCollector implements Runnable{
 
     /**
      * The data double array.
      */
-    ByteBuffer dataBytes;
+    private ByteBuffer dataBytes;
 
     /**
      * The boolean receiving data
      */
-    boolean receivingData = false;
+    private boolean receivingData = false;
 
     public ByteBuffer getDataBytes(){return dataBytes;}
     public boolean getReceivingData(){return receivingData;}
@@ -31,7 +27,10 @@ public class RunPacketCollector implements Runnable{
     public void run() {
 
         byte[] buf = new byte[56];
-        packet = new DatagramPacket(buf, buf.length);
+        /*
+      The packet.
+     */
+        DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
         try {
             Thread.sleep(10, 0);

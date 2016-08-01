@@ -29,37 +29,28 @@ import java.text.DecimalFormat;
 /**
  * Created by rdtintern on 6/19/16.
  */
+@SuppressWarnings("ALL")
 public class ForceDataActivity extends Activity {
     /**TextViews and ids that are used to update the xml layout displayed on the glass*/
-    private TextView[] forceViewArray = new TextView[6];
-    /**Array containing text views for all forces view*/
-    private TextView desiredForce, desiredForcePos;
-    private TextSwitcher footer;
+    private final TextView[] FORCE_VIEW_ARRAY = new TextView[6];
     /**Text Views for single forces view*/
-    private String[] forceTitles = {"X", "Y", "Z", "Roll", "Pitch", "Yaw"};
-    private int[] viewId = {R.id.force_x_val, R.id.force_y_val, R.id.force_z_val, R.id.force_roll_val, R.id.force_pitch_val, R.id.force_yaw_val};    //xml locations of views for all forces view
+    private final String[] FORCE_TITLES = {"X", "Y", "Z", "Roll", "Pitch", "Yaw"};
+    private final int[] VIEW_ID = {R.id.force_x_val, R.id.force_y_val, R.id.force_z_val, R.id.force_roll_val, R.id.force_pitch_val, R.id.force_yaw_val};    //xml locations of views for all forces view
     private int lastX = 0;
 
     /**
      * The Force pos format.
      */
-    DecimalFormat forcePosFormat = new DecimalFormat("0.00");   //format to specify sig figs
+    private final DecimalFormat FORCE_POS_FORMAT = new DecimalFormat("0.00");   //format to specify sig figs
 
-    SynchronizedData forceSyncData = new SynchronizedData();
+    private final SynchronizedData FORCE_SYNC_DATA = new SynchronizedData();
 
     private LineGraphSeries<DataPoint> series;
-
-    ByteBuffer forceData;
-
-    /**
-     * The Force double array.
-     */
-    double[] forceDataArray = new double[6];
 
     /**
      * The Which force.
      */
-    int whichForce = -1;
+    private int whichForce = -1;
 
 
     @Override
@@ -79,31 +70,16 @@ public class ForceDataActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        mUpdateForceVals.startUpdates();
+        UPDATE_FORCE_VALS.startUpdates();
 
 
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
     }
 
 
     @Override
     protected void onStop(){
         super.onStop();
-        mUpdateForceVals.stopUpdates();
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
+        UPDATE_FORCE_VALS.stopUpdates();
     }
 
     @Override
@@ -203,11 +179,11 @@ public class ForceDataActivity extends Activity {
     /**
      * The M update force vals.
      */
-    UIUpdater mUpdateForceVals = new UIUpdater(new Runnable() {
+    private final UIUpdater UPDATE_FORCE_VALS = new UIUpdater(new Runnable() {
         @Override
         public void run() {
             // do stuff ...
-            forceData = forceSyncData.getPacketData();
+            ByteBuffer forceData = FORCE_SYNC_DATA.getPacketData();
             if (whichForce > 0) {
                 try {
                     series.appendData(new DataPoint(lastX++, forceData.getDouble(8*(whichForce-1))), true, 10);
@@ -218,7 +194,7 @@ public class ForceDataActivity extends Activity {
                 }
             } else {
                 for (int i = 0; i < 6; i++) {
-                    forceViewArray[i].setText(String.valueOf(forcePosFormat.format(forceData.getDouble(i*8))));
+                    FORCE_VIEW_ARRAY[i].setText(String.valueOf(FORCE_POS_FORMAT.format(forceData.getDouble(i*8))));
                 }
             }
         }
@@ -228,13 +204,11 @@ public class ForceDataActivity extends Activity {
     /**
      * Make all force text views.
      */
-    public void makeAllForceTextViews() {
+    private void makeAllForceTextViews() {
         makeNotificationTextSwitcher();
         for (int count = 0; count < 6; count++) {
-            final int i = count;
-            forceViewArray[count] = (TextView) findViewById(viewId[count]);
-            Log.i("View " + String.valueOf(count), String.valueOf(forceViewArray[count]));
-            forceViewArray[count].setText("0.00");
+            FORCE_VIEW_ARRAY[count] = (TextView) findViewById(VIEW_ID[count]);
+            Log.i("View " + String.valueOf(count), String.valueOf(FORCE_VIEW_ARRAY[count]));
         }
     }
 
@@ -243,7 +217,7 @@ public class ForceDataActivity extends Activity {
      */
 
 
-    void setUpGraph() {
+    private void setUpGraph() {
         GraphView graph = (GraphView) findViewById(R.id.graph);
         // data
         series = new LineGraphSeries<DataPoint>();
@@ -254,13 +228,13 @@ public class ForceDataActivity extends Activity {
         viewport.setMinY(0);
         viewport.setMaxY(10);
         viewport.setScrollable(true);
-        graph.setTitle(forceTitles[whichForce-1]);
+        graph.setTitle(FORCE_TITLES[whichForce-1]);
         graph.setTitleTextSize(40);
         makeNotificationTextSwitcher();
     }
 
-    void makeNotificationTextSwitcher(){
-        footer = (TextSwitcher) findViewById(R.id.footer);
+    private void makeNotificationTextSwitcher(){
+        TextSwitcher footer = (TextSwitcher) findViewById(R.id.footer);
         footer.setFactory(new ViewSwitcher.ViewFactory() {
 
             @Override

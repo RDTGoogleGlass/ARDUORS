@@ -17,7 +17,7 @@ import com.google.android.glass.widget.CardBuilder;
 /**
  * Created by gglass on 6/14/16.
  */
-public class NetworkIssue extends Dialog {
+class NetworkIssue extends Dialog {
 //    private final DialogInterface.OnClickListener mOnClickListener;
     private final AudioManager mAudioManager;
     private final GestureDetector mGestureDetector;
@@ -32,11 +32,9 @@ public class NetworkIssue extends Dialog {
                 public boolean onGesture(Gesture gesture) {
                     if (gesture == Gesture.TAP) {
                         mAudioManager.playSoundEffect(Sounds.TAP);
-                        if (mOnClickListener != null) {
                             // Since Glass dialogs do not have buttons,
                             // the index passed to onClick is always 0.
                             mOnClickListener.onClick(NetworkIssue.this, 0);
-                        }
                         return true;
                     }
                     return false;
