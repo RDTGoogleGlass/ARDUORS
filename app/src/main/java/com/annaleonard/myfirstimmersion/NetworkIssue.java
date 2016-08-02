@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.Settings;
 import android.view.MotionEvent;
+import android.view.WindowManager;
+
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
@@ -62,6 +64,8 @@ class NetworkIssue extends Dialog {
                 .setText(textResId)
                 .setFootnote(footnoteResId)
                 .getView());
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //Keeps activity awake
+
     }
 
     /** Overridden to let the gesture detector handle a possible tap event. */

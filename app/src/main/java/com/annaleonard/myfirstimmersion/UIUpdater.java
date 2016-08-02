@@ -19,19 +19,11 @@ import java.nio.ByteBuffer;
  */
 class UIUpdater {
     // Create a Handler that uses the Main Looper to run in
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private Context context;
-    private Runnable mStatusChecker;
+    private final Runnable mStatusChecker;
     private int UPDATE_INTERVAL = 50;
-    private SynchronizedData notificationSynchronizedData = new SynchronizedData();
-
-    private final DialogInterface.OnClickListener mOnClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int button) {
-            // Open WiFi Settings
-            context.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-        }
-    };
+    private final SynchronizedData notificationSynchronizedData = new SynchronizedData();
 
 
     private static NetworkIssue noInternet;

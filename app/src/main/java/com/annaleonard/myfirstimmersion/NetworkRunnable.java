@@ -32,12 +32,10 @@ class NetworkRunnable implements Runnable {
     /**
      * Set poll network.
      *
-     * @param a the poll network
      */
 
-    public void setCollectData(boolean a){
-        Log.i("NetworkRunnable", "setCollectData " + String.valueOf(a));
-        collectData = a;}
+    public void stopCollectingData(){
+        collectData = false;}
 
     /**
      * Get datagram SOCKET.
@@ -48,7 +46,7 @@ class NetworkRunnable implements Runnable {
 
 
     public NetworkRunnable(){
-        NET_CHECK = new RunNetworkCheck(App.getContext());
+        NET_CHECK = new RunNetworkCheck();
         PACKET_COLLECTOR = new RunPacketCollector();
 
     }

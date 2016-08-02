@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
     protected void onDestroy()  {
         super.onDestroy();
         Log.i("MainActivity", "onDestroy called");
-        NETWORK_RUNNABLE.setCollectData(false);
+        NETWORK_RUNNABLE.stopCollectingData();
         Log.i("MainActivity", "Flag set");
         try {
             Log.i("MainActivity, OnDestroy", "Try entered");

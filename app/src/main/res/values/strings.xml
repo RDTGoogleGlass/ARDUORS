@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MyFirstImmersion</string>
-    <string name="title_activity_main">Hello World Immersion</string>
+    <string name="app_name">ARDUORS</string>
+    <string name="title_activity_main">Main Activity</string>
 
     <string name="information">Information</string>
     <string name="title_activity_information">Information Activity</string>

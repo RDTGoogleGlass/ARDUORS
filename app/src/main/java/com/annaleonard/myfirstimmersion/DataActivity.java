@@ -30,26 +30,19 @@ public abstract class DataActivity extends Activity {
 
     int allValsLayout, dataMenu, numData;
     /**TextViews and ids that are used to update the xml layout displayed on the glass*/
-    private TextView[] DATA_VIEW_ARRAY;
+    TextView[] dataViewArray;
     /**Array containing text views for all data view*/
-    private TextView desiredData, desiredDataVal;
-    /**Text Views for single data view*/
-    private int[] VIEW_ID;    //xml locations of views for all datas view
-
+    int[] viewIDs;    //xml locations of views for all data view
     /**
      * The Data pos format.
      */
-    private DecimalFormat DATA_POS_FORMAT = new DecimalFormat("0.00");   //format to specify sig figs
-
-    private final SynchronizedData DATA_SYNC_DATA = new SynchronizedData();
-
-
+    final DecimalFormat DATA_POS_FORMAT = new DecimalFormat("0.00");   //format to specify sig figs
+    static ByteBuffer mData;
+    private final SynchronizedData SYNC_DATA = new SynchronizedData();
     /**
      * The Which data.
      */
-    private int whichData = -1;
-
-    public void setWhichData(int i){whichData = i;}
+    int whichData = -1;
 
 
     @Override
@@ -110,36 +103,39 @@ public abstract class DataActivity extends Activity {
         @Override
         public void run() {
             // do stuff ...
-            ByteBuffer dataData = DATA_SYNC_DATA.getPacketData();
+            mData = SYNC_DATA.getPacketData();
             if (whichData > 0) {
-                updateSingleDataUI(numData);
+                updateSingleDataUI();
             } else {
                 for (int i = 0; i < numData; i++) {
-                    updateAllDataUI();
+                    dataViewArray[i].setText(String.valueOf(DATA_POS_FORMAT.format(mData.getDouble(i*8))));
                 }
             }
         }
 
     });
 
-    abstract void updateSingleDataUI(int i);
-    abstract void updateAllDataUI();
+    abstract void updateSingleDataUI();
 
     /**
      * Make all data text views.
      */
-    private void makeAllDataTextViews() {
+    void makeAllDataTextViews() {
         makeNotificationTextSwitcher();
+        dataViewArray=new TextView[numData];
         for (int count = 0; count < numData; count++) {
-            DATA_VIEW_ARRAY[count] = (TextView) findViewById(VIEW_ID[count]);
-            Log.i("View " + String.valueOf(count), String.valueOf(DATA_VIEW_ARRAY[count]));
+            Log.i("DataActivity", String.valueOf(count) + "/" + String.valueOf(numData));
+            dataViewArray[count] = (TextView) findViewById(viewIDs[count]);
+            Log.i("View " + String.valueOf(count), String.valueOf(dataViewArray[count]));
         }
     }
 
     /**
      * Make single force text views.
      */
-    abstract void makeSingleDataTextViews();
+    void makeSingleDataTextViews(){
+        makeNotificationTextSwitcher();
+    }
 
     private void makeNotificationTextSwitcher(){
         TextSwitcher footer = (TextSwitcher) findViewById(R.id.footer);
