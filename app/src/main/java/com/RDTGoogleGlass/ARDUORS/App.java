@@ -1,4 +1,4 @@
-package com.annaleonard.myfirstimmersion;
+package com.RDTGoogleGlass.ARDUORS;
 
 import android.app.Application;
 import android.content.Context;

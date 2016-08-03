@@ -1,11 +1,8 @@
-package com.annaleonard.myfirstimmersion;
+package com.RDTGoogleGlass.ARDUORS;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
 
 import java.nio.ByteBuffer;
 

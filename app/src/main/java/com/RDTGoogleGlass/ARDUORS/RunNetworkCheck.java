@@ -1,4 +1,4 @@
-package com.annaleonard.myfirstimmersion;
+package com.RDTGoogleGlass.ARDUORS;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

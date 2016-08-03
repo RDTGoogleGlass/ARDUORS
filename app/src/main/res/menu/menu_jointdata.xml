@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.annaleonard.myfirstimmersion.JointDataActivity"
+    tools:context="com.RDTGoogleGlass.ARDUORS.JointDataActivity"
     >
     <item
         android:id="@+id/single_joint_option"

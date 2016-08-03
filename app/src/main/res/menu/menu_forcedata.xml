@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.annaleonard.myfirstimmersion.ForceDataActivity">
+    tools:context="com.RDTGoogleGlass.ARDUORS.ForceDataActivity">
     <item
         android:id="@+id/graph_single_force_option"
         android:title="@string/graph_single_force_trigger">
