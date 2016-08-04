@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.Settings;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
@@ -85,8 +86,13 @@ class NetworkIssue extends Dialog {
 
 
     @Override
-    public void setOnCancelListener(OnCancelListener listener) {
-        super.setOnCancelListener(listener);
-        ((Activity) getContext()).finish();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            ((Activity) App.getContext()).finish();
+            this.dismiss();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
+
 }

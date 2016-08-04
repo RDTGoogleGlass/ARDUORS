@@ -41,9 +41,9 @@ public class InformationActivity extends Activity {
         //get data for cards to display from the background thread
 
         //add cards to array
-        mCards.add(new CardBuilder(this, CardBuilder.Layout.TEXT).setText("When you 'Start Measuring', you have two menu options: 'Show Joint n' and 'Show All Joints'. Cue voice recognition by saying 'Ok Glass' when you can see it written at the bottom of the screen."));
-        mCards.add(new CardBuilder(this, CardBuilder.Layout.TEXT).setText("If you are confused, refer to the tutorial google_glass_tutorial. Ask Nick Scott where to find Glass documents."));
-        mCards.add(new CardBuilder(this, CardBuilder.Layout.TEXT).setText("This application was built in January 2015 by Anna Leonard. Improvements were made during Summer 2015 with the help of Julianna Long."));
+        mCards.add(new CardBuilder(this, CardBuilder.Layout.TEXT).setText("Tap to open a menu. Swipe forward and backward to navigate between menu items. Tap on a menu item to select.  Swipe down to dismiss a menu item or page."));
+//        mCards.add(new CardBuilder(this, CardBuilder.Layout.TEXT).setText("If you are confused, refer to the tutorial google_glass_tutorial. Ask Nick Scott where to find Glass documents."));
+        mCards.add(new CardBuilder(this, CardBuilder.Layout.TEXT).setText("This application was created in January 2015 by Anna Leonard. Improvements were made during Summer 2015 with the help of Julianna Long.  Version 2.0 was completed in Summer 2016 by Julianna Long and Sreya Vangara"));
     }
 
     private void publishCards(){
