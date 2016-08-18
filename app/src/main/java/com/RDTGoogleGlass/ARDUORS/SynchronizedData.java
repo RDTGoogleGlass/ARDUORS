@@ -10,6 +10,7 @@ class SynchronizedData {
     private static boolean isConnected = false;
     private static boolean receivingData = false;
     private static ByteBuffer packetData;
+    private static boolean usingData = false;
 
 
     public void setIsConnected (boolean connectStatus)
@@ -38,5 +39,15 @@ class SynchronizedData {
     }
 
     public synchronized ByteBuffer getPacketData() {return packetData;}
+
+    public void setUsingData(boolean activityOpened){
+        synchronized (this)
+        {
+            usingData=activityOpened;
+        }
+    }
+
+    public synchronized boolean getUsingData() {return usingData;}
+
 
 }

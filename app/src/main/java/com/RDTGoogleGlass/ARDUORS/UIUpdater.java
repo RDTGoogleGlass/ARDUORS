@@ -3,6 +3,7 @@ package com.RDTGoogleGlass.ARDUORS;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 
@@ -41,65 +42,78 @@ class UIUpdater {
             public void run() {
                 // Run the passed runnable
                 context = App.getContext();
-
-
+                Log.i("UI verifying netConnect", String.valueOf(notificationSynchronizedData.getUsingData()));
                 if(noInternet==null)
                 {
                     noInternet = new NetworkIssue(context, R.drawable.ic_cloud_sad_150, R.string.no_internet_text, R.string.alert_footnote_text);
                 }
 
-                if (notificationSynchronizedData.getIsConnected())
-                {
-                    if(noData==null) {
-                        noData = new NetworkIssue(context, R.drawable.ic_warning_150, R.string.no_data_text, R.string.alert_footnote_text);
-                    }
-                    if(noInternet.isShowing())
-                    {
-                        noInternet.dismiss();
-                    }
+                if(noData==null) {
+                    noData = new NetworkIssue(context, R.drawable.ic_warning_150, R.string.no_data_text, R.string.alert_footnote_text);
+                }
 
-                    if (notificationSynchronizedData.getReceivingData())
+                if (notificationSynchronizedData.getUsingData())
+                {
+
+
+                    if (notificationSynchronizedData.getIsConnected())
                     {
-                        if (noData.isShowing())
+
+                        if(noInternet.isShowing())
                         {
-                            noData.dismiss();
+                            noInternet.dismiss();
                         }
 
-                        //UiUpdater instance created in the Activity method and updates the visible data.
-                        uiUpdater.run();
+                        if (notificationSynchronizedData.getReceivingData())
+                        {
+                            if (noData.isShowing())
+                            {
+                                noData.dismiss();
+                            }
 
-                        //run notificationChecker here:
-                        ByteBuffer currentData = notificationSynchronizedData.getPacketData();
-                        //parse notifications out of ByteBuffer
+                            //UiUpdater instance created in the Activity method and updates the visible data.
+                            uiUpdater.run();
 
-                        //update notification footer
+                            //run notificationChecker here:
+                            ByteBuffer currentData = notificationSynchronizedData.getPacketData();
+                            //parse notifications out of ByteBuffer
+
+                            //update notification footer
 //                        footer.setText(mNotificationCheck.getNotificationText());
 //                        footer.setBackgroundColor(mNotificationCheck.getNotificationColor());
 //                        handle multiple notifications here too.
 
+                        }
+                        else
+                        {
+
+                            Log.i("show page", String.valueOf((!noData.isShowing())&&notificationSynchronizedData.getUsingData()));
+
+                            if((!noData.isShowing())&&notificationSynchronizedData.getUsingData())
+                            {
+                                noData.show();
+                            }
+
+                        }
                     }
                     else
                     {
 
 
-                        if(!noData.isShowing())
+                        if(!noInternet.isShowing()&&notificationSynchronizedData.getUsingData())
                         {
-                            noData.show();
+                            noInternet.show();
                         }
-
                     }
                 }
-                else
+                else if (noInternet.isShowing())
                 {
-
-
-                    if(!noInternet.isShowing())
-                    {
-                        noInternet.show();
-                    }
+                    noInternet.dismiss();
                 }
-
-
+                else if(noData.isShowing())
+                {
+                    noData.dismiss();
+                }
 
                 // Re-run it after the update interval
                 mHandler.postDelayed(this, UPDATE_INTERVAL);
@@ -133,6 +147,7 @@ class UIUpdater {
      * by removing the callback.
      */
     public synchronized void stopUpdates(){
+
         mHandler.removeCallbacks(mStatusChecker);
     }
 

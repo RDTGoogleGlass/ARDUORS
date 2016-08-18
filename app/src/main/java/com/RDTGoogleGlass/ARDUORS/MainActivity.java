@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        Log.i("MainActivity", "onCreate called");
+//        Log.i("MainActivity", "onCreate called");
 
 
         setContentView(R.layout.main);
@@ -45,47 +45,46 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("MainActivity", "onStart called");
+//        Log.i("MainActivity", "onStart called");
 
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        Log.i("MainActivity", "onResume called");
     }
 
     @Override
     protected void onRestart(){
         super.onRestart();
-        Log.i("MainActivity", "onRestart called");
+//        Log.i("MainActivity", "onRestart called");
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        Log.i("MainActivity", "onPause called");
+//        Log.i("MainActivity", "onPause called");
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        Log.i("MainActivity", "onStop called");
+//        Log.i("MainActivity", "onStop called");
     }
 
     @Override
     protected void onDestroy()  {
         super.onDestroy();
-        Log.i("MainActivity", "onDestroy called");
+//        Log.i("MainActivity", "onDestroy called");
         NETWORK_RUNNABLE.stopCollectingData();
         Log.i("MainActivity", "Flag set");
         try {
-            Log.i("MainActivity, OnDestroy", "Try entered");
+//            Log.i("MainActivity, OnDestroy", "Try entered");
             mThread.join();
-            Log.i("MainActivity", "Thread Killed");
+//            Log.i("MainActivity", "Thread Killed");
         }catch (Exception e){
             e.printStackTrace();
-            Log.i("MainActivity", "Thread failed to die");
+//            Log.i("MainActivity", "Thread failed to die");
 
         }
     }

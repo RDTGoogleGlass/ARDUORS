@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.WindowManager;
@@ -88,8 +89,11 @@ class NetworkIssue extends Dialog {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            ((Activity) App.getContext()).finish();
+            Log.i("NetworkIssue", "attempting exit");
             this.dismiss();
+            Log.i("NetworkIssue", "Dialog dismissed");
+            ((Activity) App.getContext()).finish();
+            Log.i("NetworkIssue", "Activity finished");
             return true;
         }
         return super.onKeyDown(keyCode, event);

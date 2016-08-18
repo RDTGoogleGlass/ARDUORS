@@ -63,17 +63,24 @@ public abstract class DataActivity extends Activity {
     protected void onStart() {
         super.onStart();
         UPDATE_DATA_VALS.startUpdates();
-
-
+        SYNC_DATA.setUsingData(true);
+        Log.i("DataActivity", "Start: using data true");
     }
 
 
     @Override
     protected void onStop(){
-        super.onStop();
         UPDATE_DATA_VALS.stopUpdates();
+        super.onStop();
+        SYNC_DATA.setUsingData(false);
+        Log.i("DataActivity", "Stop: using data false");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.getContext().dismiss();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

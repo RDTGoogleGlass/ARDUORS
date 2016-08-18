@@ -20,8 +20,14 @@ class App extends Application implements TextToSpeech.OnInitListener {
         mContext = context;
     }
 
+
     @Override
     public void onInit(int i) {
 
+    }
+
+    @Override
+    public void onCreate(){
+        super.onCreate();
     }
 }
