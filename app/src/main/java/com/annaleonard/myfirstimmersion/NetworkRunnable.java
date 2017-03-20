@@ -1,7 +1,9 @@
 package com.annaleonard.myfirstimmersion;
 
 import android.util.Log;
+
 import java.net.DatagramSocket;
+import java.net.Socket;
 import java.net.InetAddress;
 
 /**
@@ -20,7 +22,7 @@ class NetworkRunnable implements Runnable {
      * The Socket.
      */
 
-    private static final DatagramSocket SOCKET = setUpSocket(); //Use Glass IP address here
+    private static final Socket SOCKET = setUpSocket(); //Use Glass IP address here
 
     /**
      * The Poll network.
@@ -42,7 +44,7 @@ class NetworkRunnable implements Runnable {
      *
      * @return the datagram SOCKET
      */
-    public static DatagramSocket getSocket(){return SOCKET;}
+    public static Socket getSocket(){return SOCKET;}
 
 
     public NetworkRunnable(){
@@ -54,11 +56,12 @@ class NetworkRunnable implements Runnable {
 
 
 
-    private static DatagramSocket setUpSocket() {
+    private static Socket setUpSocket() {
 
-        DatagramSocket mSocket;
+        Socket mSocket;
         try {
-            mSocket = new DatagramSocket(61557, InetAddress.getByName("10.0.0.15"));
+            mSocket = new Socket(InetAddress.getByName("10.0.0.15"), 61557);
+
         } catch (Exception e) {
             mSocket = null;
             e.printStackTrace();
