@@ -175,11 +175,6 @@ public class ForceDataActivity extends DataActivity {
     private void setUpGauge(){
         CustomGauge gauge = (CustomGauge) findViewById(R.id.gauge);
         gauge.setValue((int) data);
-        gauge.setStartAngle(0);
-        gauge.setEndValue(180);
-        gauge.setDividerColor(0);
-        gauge.setPointSize(10);
-        gauge.setStrokeColor(0);
     }
 
 

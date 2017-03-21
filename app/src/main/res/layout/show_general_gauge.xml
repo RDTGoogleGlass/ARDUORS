@@ -20,7 +20,7 @@
         >
 
     <pl.pawelkleczkowski.customgauge.CustomGauge
-        android:id="@+id/gauge1"
+        android:id="@+id/gauge3"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:paddingBottom="20dp"
@@ -30,13 +30,13 @@
         gauge:pointStartColor="@color/Red"
         gauge:pointEndColor="@color/Red"
         gauge:pointSize="6"
-        gauge:startAngel="135"
+        gauge:startAngel="0"
         gauge:strokeCap="ROUND"
         gauge:strokeColor="@color/Gray"
         gauge:strokeWidth="10dp"
         gauge:startValue="0"
         gauge:endValue="1000"
-        gauge:sweepAngel="270"
+        gauge:sweepAngel="180"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
