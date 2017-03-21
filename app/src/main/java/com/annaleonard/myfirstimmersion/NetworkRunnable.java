@@ -2,6 +2,7 @@ package com.annaleonard.myfirstimmersion;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.net.InetAddress;
@@ -98,6 +99,8 @@ class NetworkRunnable implements Runnable {
             Log.i("NetworkRunnable", "while loop exited");
 
         } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

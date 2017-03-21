@@ -1,8 +1,15 @@
 package com.annaleonard.myfirstimmersion;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import org.apache.commons.io.IOUtils;
+
+
 
 
 /**
@@ -30,26 +37,32 @@ class RunPacketCollector implements Runnable{
         /*
       The packet.
      */
-        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+            ByteArrayInputStream packet = new ByteArrayInputStream(buf){
+
+            public void write(int oneByte) throws IOException {
+
+            }
+        };
 
         try {
             Thread.sleep(10, 0);
 
             try {
-                NetworkRunnable.getSocket().receive(packet);   //receive UDP packet
+                NetworkRunnable.getSocket().getInputStream();   //receive TCP packet
                 receivingData = true;
             } catch (Exception e) {
                 receivingData = false;
                 e.printStackTrace();
             }
 
-            //Get data from UDP packet and convert to shared byte array
+            //Get data from TCP packet and convert to shared byte array
             if (receivingData) {
-                dataBytes = ByteBuffer.wrap(packet.getData()).order(ByteOrder.LITTLE_ENDIAN);
+                dataBytes = ByteBuffer.wrap(IOUtils.toByteArray(packet)).order(ByteOrder.LITTLE_ENDIAN);
             }
 
-
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
