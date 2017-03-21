@@ -36,6 +36,7 @@
     <string name="title_activity_jointdata">Joint Data</string>
     <string name="title_activity_forcedata">Force Data</string>
     <string name="graph_single_force_trigger">Graph Single Force</string>
+    <string name="gauge_single_force_trigger">Gauge Single Force</string>
     <string name="all_forces_trigger">Show All Forces</string>
 
     <color name="white">#FFFFFF</color>

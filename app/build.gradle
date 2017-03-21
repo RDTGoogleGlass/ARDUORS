@@ -35,4 +35,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.jjoe64:graphview:4.1.0'
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    compile 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.3'
 }

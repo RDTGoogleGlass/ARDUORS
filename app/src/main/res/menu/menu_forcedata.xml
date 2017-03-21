@@ -5,6 +5,7 @@
         android:id="@+id/graph_single_force_option"
         android:title="@string/graph_single_force_trigger">
 
+
         <menu>
             <item
                 android:id="@+id/showForceX"
@@ -32,6 +33,43 @@
                 android:textSize = "20dp"/>
             <item
                 android:id="@+id/showForceYaw"
+                android:title="Yaw"
+                android:orderInCategory="6"
+                android:textSize = "20dp"/>
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/gauge_single_force_option"
+        android:title="@string/gauge_single_force_trigger">
+        <menu>
+            <item
+                android:id="@+id/gaugeForceX"
+                android:title="X"
+                android:orderInCategory="1" />
+            <item
+                android:id="@+id/gaugeForceY"
+                android:title="Y"
+                android:orderInCategory="2"
+                android:textSize = "20dp"/>
+            <item
+                android:id="@+id/gaugeForceZ"
+                android:title="Z"
+                android:orderInCategory="3"
+                android:textSize = "20dp"/>
+            <item
+                android:id="@+id/gaugeForceRoll"
+                android:title="Roll"
+                android:orderInCategory="4"
+                android:textSize = "20dp"/>
+            <item
+                android:id="@+id/gaugeForcePitch"
+                android:title="Pitch"
+                android:orderInCategory="5"
+                android:textSize = "20dp"/>
+            <item
+                android:id="@+id/gaugeForceYaw"
                 android:title="Yaw"
                 android:orderInCategory="6"
                 android:textSize = "20dp"/>
