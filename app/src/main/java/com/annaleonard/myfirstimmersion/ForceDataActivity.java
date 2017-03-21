@@ -15,6 +15,8 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import pl.pawelkleczkowski.customgauge.CustomGauge;
+
 /**
  * Created by rdtintern on 6/19/16.
  */
@@ -33,6 +35,7 @@ public class ForceDataActivity extends DataActivity {
      * The Force pos format.
      */
     private LineGraphSeries<DataPoint> series;
+    private double data;
 
     /**
      * The Which force.
@@ -83,7 +86,8 @@ public class ForceDataActivity extends DataActivity {
             case (R.id.graph_single_force_option):
                 //sets view to single force layout, but does not set views
                 return true;
-
+            case (R.id.gauge_single_force_option):
+                return true;
             //each option below individually sets the views in the single force view to display the name and data for that particular force.
             case (R.id.showForceX):
 
@@ -130,6 +134,7 @@ public class ForceDataActivity extends DataActivity {
     void updateSingleDataUI() {
         try {
             series.appendData(new DataPoint(lastX++, mData.getDouble(8*(whichData-1))), true, 10);
+            data= mData.getDouble((8*whichData-1));
         }
         catch (Exception e)
         {
@@ -142,8 +147,10 @@ public class ForceDataActivity extends DataActivity {
     @Override
     public void makeSingleDataTextViews() {
         setContentView(R.layout.show_general_graph);
+        setContentView(R.layout.show_general_gauge);
         super.makeSingleDataTextViews();
         setUpGraph();
+        setUpGauge();
         App.setContext(this);
 
     }
@@ -161,8 +168,18 @@ public class ForceDataActivity extends DataActivity {
         viewport.setMinY(0);
         viewport.setMaxY(10);
         viewport.setScrollable(true);
-        graph.setTitle(FORCE_TITLES[whichData-1]);
+        graph.setTitle(FORCE_TITLES[whichData - 1]);
         graph.setTitleTextSize(40);
+    }
+
+    private void setUpGauge(){
+        CustomGauge gauge = (CustomGauge) findViewById(R.id.gauge);
+        gauge.setValue((int) data);
+        gauge.setStartAngle(0);
+        gauge.setEndValue(180);
+        gauge.setDividerColor(0);
+        gauge.setPointSize(10);
+        gauge.setStrokeColor(0);
     }
 
 
