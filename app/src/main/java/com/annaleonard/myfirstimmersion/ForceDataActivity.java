@@ -16,7 +16,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import pl.pawelkleczkowski.customgauge.CustomGauge;
-
+import android.support.v7.app.AppCompatActivity;
 /**
  * Created by rdtintern on 6/19/16.
  */
