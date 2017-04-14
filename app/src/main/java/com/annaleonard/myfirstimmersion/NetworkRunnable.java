@@ -62,6 +62,7 @@ class NetworkRunnable implements Runnable {
         Socket mSocket;
         try {
             mSocket = new Socket(InetAddress.getByName("10.0.0.15"), 61557);
+            //tcp ports- 8873, 35660
 
         } catch (Exception e) {
             mSocket = null;

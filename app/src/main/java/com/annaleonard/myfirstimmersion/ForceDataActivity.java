@@ -15,7 +15,7 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import pl.pawelkleczkowski.customgauge.CustomGauge;
+//import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 /**
  * Created by rdtintern on 6/19/16.
@@ -88,9 +88,9 @@ public class ForceDataActivity extends DataActivity {
                 //sets view to single force layout, but does not set views
                 view = 1;
                 return true;
-            case (R.id.gauge_single_force_option):
-                view = 2;
-                return true;
+          //  case (R.id.gauge_single_force_option):
+          //      view = 2;
+         //       return true;
             //each option below individually sets the views in the single force view to display the name and data for that particular force.
             case (R.id.showForceX):
 
@@ -140,9 +140,9 @@ public class ForceDataActivity extends DataActivity {
                 case 1:
                     series.appendData(new DataPoint(lastX++, mData.getDouble(8*(whichData-1))), true, 10);
                     break;
-                case 2:
-                    data= mData.getDouble((8*whichData-1));
-                    break;
+         //       case 2:
+         //           data= mData.getDouble((8*whichData-1));
+         //           break;
             }
         }
         catch (Exception e)
@@ -162,9 +162,9 @@ public class ForceDataActivity extends DataActivity {
             case 1:
                 setUpGraph();
                 break;
-            case 2:
-                setUpGauge();
-                break;
+        //    case 2:
+         //       setUpGauge();
+       //         break;
         }
         App.setContext(this);
 
@@ -187,10 +187,10 @@ public class ForceDataActivity extends DataActivity {
         graph.setTitleTextSize(40);
     }
 
-    private void setUpGauge(){
+ /*   private void setUpGauge(){
         CustomGauge gauge = (CustomGauge) findViewById(R.id.gauge);
         gauge.setValue((int) data);
-    }
+    } */
 
 
 
