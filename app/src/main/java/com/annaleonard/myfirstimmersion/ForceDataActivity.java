@@ -1,5 +1,7 @@
 package com.annaleonard.myfirstimmersion;
+import java.util.Random;
 
+//import io.sule.gaugelibrary.GaugeView;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -14,8 +16,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
+import com.github.thuat26:CustomGaugeView GraphView;
 import pl.pawelkleczkowski.customgauge.CustomGauge;
+
 import android.support.v7.app.AppCompatActivity;
 /**
  * Created by rdtintern on 6/19/16.
@@ -133,8 +136,10 @@ public class ForceDataActivity extends DataActivity {
     @Override
     void updateSingleDataUI() {
         try {
+
             series.appendData(new DataPoint(lastX++, mData.getDouble(8*(whichData-1))), true, 10);
             data= mData.getDouble((8*whichData-1));
+            gaugeView.setTargetValue(data);
         }
         catch (Exception e)
         {
@@ -173,8 +178,14 @@ public class ForceDataActivity extends DataActivity {
     }
 
     private void setUpGauge(){
-        CustomGauge gauge = (CustomGauge) findViewById(R.id.gauge);
-        gauge.setValue((int) data);
+        //CustomGauge gauge = (CustomGauge) findViewById(R.id.gauge);
+        //gauge.setValue((int) data);
+        final GaugeView gaugeView = (GaugeView) findViewById(R.id.gauge_view);
+        final Button btnStart = (Button) findViewById(R.id.btn_start);
+        gaugeView.setShowRangeValues(true);
+        gaugeView.setTargetValue(0);
+        final Random random = new Random();
+        final CountDownTimer timer = new CountDownTimer(10000, 2)
     }
 
 
