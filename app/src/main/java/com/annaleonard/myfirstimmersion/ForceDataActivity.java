@@ -136,8 +136,14 @@ public class ForceDataActivity extends DataActivity {
     @Override
     void updateSingleDataUI() {
         try {
-            series.appendData(new DataPoint(lastX++, mData.getDouble(8*(whichData-1))), true, 10);
-            data= mData.getDouble((8*whichData-1));
+            switch(view){
+                case 1:
+                    series.appendData(new DataPoint(lastX++, mData.getDouble(8*(whichData-1))), true, 10);
+                    break;
+                case 2:
+                    data= mData.getDouble((8*whichData-1));
+                    break;
+            }
         }
         catch (Exception e)
         {
@@ -152,10 +158,13 @@ public class ForceDataActivity extends DataActivity {
         setContentView(R.layout.show_general_graph);
         setContentView(R.layout.show_general_gauge);
         super.makeSingleDataTextViews();
-        if (view == 1) {
-            setUpGraph();
-        }else if (view == 2) {
-            setUpGauge();
+        switch(view) {
+            case 1:
+                setUpGraph();
+                break;
+            case 2:
+                setUpGauge();
+                break;
         }
         App.setContext(this);
 
