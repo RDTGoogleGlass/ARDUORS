@@ -36,6 +36,7 @@ public class ForceDataActivity extends DataActivity {
      */
     private LineGraphSeries<DataPoint> series;
     private double data;
+    private int view = 0;
 
     /**
      * The Which force.
@@ -85,8 +86,10 @@ public class ForceDataActivity extends DataActivity {
                 return true;
             case (R.id.graph_single_force_option):
                 //sets view to single force layout, but does not set views
+                view = 1;
                 return true;
             case (R.id.gauge_single_force_option):
+                view = 2;
                 return true;
             //each option below individually sets the views in the single force view to display the name and data for that particular force.
             case (R.id.showForceX):
@@ -149,8 +152,11 @@ public class ForceDataActivity extends DataActivity {
         setContentView(R.layout.show_general_graph);
         setContentView(R.layout.show_general_gauge);
         super.makeSingleDataTextViews();
-        setUpGraph();
-        setUpGauge();
+        if (view == 1) {
+            setUpGraph();
+        }else if (view == 2) {
+            setUpGauge();
+        }
         App.setContext(this);
 
     }
